@@ -11,11 +11,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .logo{font-size:11px;font-weight:600;color:#c9a84c;letter-spacing:.08em}
 .title{font-size:18px;font-weight:600;color:#fff;margin-top:1px}
 .sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px}
-.fields{background:#fff;padding:.85rem 1.25rem;border-bottom:1px solid #e5e7eb;display:flex;flex-direction:column;gap:10px}
+.fields{background:#fff;padding:.85rem 1.25rem;border-bottom:1px solid #e5e7eb;display:flex;flex-direction:column;gap:12px}
 .field-label{font-size:11px;color:#6b7280;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .field-label span{color:#ef4444}
-input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;color:#111;background:#f9fafb}
-input:focus{outline:none;border-color:#0a1628;background:#fff}
+input, select{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;color:#111;background:#f9fafb;appearance:none;-webkit-appearance:none}
+input:focus, select:focus{outline:none;border-color:#0a1628;background:#fff}
+.select-wrap{position:relative}
+.select-wrap::after{content:"⌄";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6b7280;font-size:18px;pointer-events:none}
+.prop-info{margin-top:6px;background:#f0f4ff;border-radius:8px;padding:8px 12px;font-size:13px;color:#374151;display:none;line-height:1.5}
+.prop-info strong{color:#0a1628;font-weight:600}
 .section{margin-top:10px}
 .sec-hdr{background:#fff;padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid #f0f0f0}
 .sec-left{display:flex;align-items:center;gap:10px}
@@ -63,8 +67,23 @@ input:focus{outline:none;border-color:#0a1628;background:#fff}
     <input type="text" id="emp" placeholder="Your full name...">
   </div>
   <div>
-    <div class="field-label">Property / Service address <span>*</span></div>
-    <input type="text" id="prop" placeholder="e.g. 1234 Beach Blvd, Unit 2">
+    <div class="field-label">Property <span>*</span></div>
+    <div class="select-wrap">
+      <select id="prop" onchange="onPropChange()">
+        <option value="">— Select property —</option>
+        <option value="Beachwalk|441 6th Ave S, Jacksonville Beach, FL 32250">Beachwalk</option>
+        <option value="Villa Bella|2691 Isabella Blvd, Jacksonville, FL 32250">Villa Bella</option>
+        <option value="AquaTerra|237 33rd Ave S, Jacksonville Beach, FL 32250">AquaTerra</option>
+        <option value="Azure|123 12th Ave S, Jacksonville Beach, FL 32250">Azure</option>
+        <option value="Welcome Homes SurfMood|SurfMood 15th Ave N, Jacksonville Beach, FL 32250">Welcome Homes SurfMood</option>
+        <option value="Welcome Homes H2O|130 32nd Ave S, Jacksonville Beach, FL 32250">Welcome Homes H2O</option>
+        <option value="PV Escape|4158 Ponce de León Blvd, Jacksonville, FL 32250">PV Escape</option>
+        <option value="Beach Please|220 32nd Ave S, Jacksonville Beach, FL 32250">Beach Please</option>
+        <option value="Welcome Homes SurfSide|125 3rd Ave S, Jacksonville Beach, FL 32250">Welcome Homes SurfSide</option>
+        <option value="Welcome Homes Mermaid Cove|835 15th Ave N, Jacksonville Beach, FL 32250">Welcome Homes Mermaid Cove</option>
+      </select>
+    </div>
+    <div class="prop-info" id="prop-info"></div>
   </div>
 </div>
 
@@ -85,9 +104,7 @@ input:focus{outline:none;border-color:#0a1628;background:#fff}
 <script>
 const cats = [
   {
-    id: "kitchen",
-    label: "Kitchen Supplies",
-    icon: "🍽️",
+    id: "kitchen", label: "Kitchen Supplies", icon: "🍽️",
     items: [
       { name: "Paper towels\n(2 backups under sink)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Paper_towel.jpg/320px-Paper_towel.jpg" },
       { name: "Sponge\n(wrapped)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Sponge_for_cleaning.jpg/320px-Sponge_for_cleaning.jpg" },
@@ -110,60 +127,59 @@ const cats = [
     ]
   },
   {
-    id: "linens",
-    label: "Linens & Bedding",
-    icon: "🛏️",
+    id: "linens", label: "Linens & Bedding", icon: "🛏️",
     items: [
-      { name: "Mattress protector — Twin",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Mattress protector — Full",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Mattress protector — Queen",      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Mattress protector — King",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Fitted sheet — Twin",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Fitted sheet — Full",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Fitted sheet — Queen",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Fitted sheet — King",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Flat sheet — Twin",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Flat sheet — Full",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Flat sheet — Queen",              img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Flat sheet — King",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Pillowcases (set)",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Pillowcase.jpg/320px-Pillowcase.jpg" },
-      { name: "Blanket — Twin",                  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
-      { name: "Blanket — Full/Queen",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
-      { name: "Blanket — King",                  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
-      { name: "Duvet cover — Twin",              img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
-      { name: "Duvet cover — Full/Queen",        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
-      { name: "Duvet cover — King",              img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
-      { name: "Duvet insert — Twin",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
-      { name: "Duvet insert — Full/Queen",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
-      { name: "Duvet insert — King",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" }
+      { name: "Mattress protector — Twin",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Mattress protector — Full",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Mattress protector — Queen",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Mattress protector — King",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Fitted sheet — Twin",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Fitted sheet — Full",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Fitted sheet — Queen",         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Fitted sheet — King",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Flat sheet — Twin",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Flat sheet — Full",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Flat sheet — Queen",           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Flat sheet — King",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Pillowcases (set)",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Pillowcase.jpg/320px-Pillowcase.jpg" },
+      { name: "Blanket — Twin",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
+      { name: "Blanket — Full/Queen",         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
+      { name: "Blanket — King",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
+      { name: "Duvet cover — Twin",           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
+      { name: "Duvet cover — Full/Queen",     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
+      { name: "Duvet cover — King",           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
+      { name: "Duvet insert — Twin",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
+      { name: "Duvet insert — Full/Queen",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
+      { name: "Duvet insert — King",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" }
     ]
   },
   {
-    id: "towels",
-    label: "Towels & Bath",
-    icon: "🛁",
+    id: "towels", label: "Towels & Bath", icon: "🛁",
     items: [
-      { name: "Bath towels (set of 4)",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Towel.jpg/320px-Towel.jpg" },
-      { name: "Hand towels (set of 4)",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Folded_hand_towel.jpg/320px-Folded_hand_towel.jpg" },
-      { name: "Washcloths (set of 4)",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Washcloth.jpg/320px-Washcloth.jpg" },
-      { name: "Pool / beach towels",      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Beach_towel.jpg/320px-Beach_towel.jpg" },
-      { name: "Bath mat",                 img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Bathroom_mat.jpg/320px-Bathroom_mat.jpg" }
+      { name: "Bath towels (set of 4)",  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Towel.jpg/320px-Towel.jpg" },
+      { name: "Hand towels (set of 4)",  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Folded_hand_towel.jpg/320px-Folded_hand_towel.jpg" },
+      { name: "Washcloths (set of 4)",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Washcloth.jpg/320px-Washcloth.jpg" },
+      { name: "Pool / beach towels",     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Beach_towel.jpg/320px-Beach_towel.jpg" },
+      { name: "Bath mat",                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Bathroom_mat.jpg/320px-Bathroom_mat.jpg" }
     ]
   }
 ];
 
-// Build state using index to avoid key escaping issues
 const allItems = [];
-cats.forEach((cat, ci) => {
-  cat.items.forEach((item, ii) => {
-    allItems.push({ ci, ii, cat: cat.id, name: item.name, img: item.img });
-  });
-});
+cats.forEach((cat, ci) => cat.items.forEach((item, ii) => allItems.push({ ci, ii, cat: cat.id, name: item.name, img: item.img })));
 const state = new Array(allItems.length).fill(false);
 const openSec = { kitchen: true, linens: true, towels: true };
 
-function getIdx(ci, ii) {
-  return allItems.findIndex(x => x.ci === ci && x.ii === ii);
+function getIdx(ci, ii) { return allItems.findIndex(x => x.ci === ci && x.ii === ii); }
+
+function onPropChange() {
+  const sel = document.getElementById("prop");
+  const val = sel.value;
+  const info = document.getElementById("prop-info");
+  if (!val) { info.style.display = "none"; return; }
+  const [name, addr] = val.split("|");
+  info.innerHTML = `<strong>${name}</strong><br>${addr}`;
+  info.style.display = "block";
 }
 
 function render() {
@@ -186,7 +202,7 @@ function render() {
         const nameHtml = item.name.replace(/\n/g, "<br>");
         gridHtml += `
           <div class="card${ok ? " ok" : ""}" data-idx="${idx}">
-            <img class="card-img" src="${item.img}" alt="${item.name.replace(/\n/g," ")}"
+            <img class="card-img" src="${item.img}" alt="${item.name.replace(/\n/g, " ")}"
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="card-fallback" style="display:none">${cat.icon}</div>
             <div class="card-body">
@@ -209,52 +225,43 @@ function render() {
     cont.appendChild(sec);
   });
 
-  // Attach events via JS (no inline onclick)
   document.querySelectorAll(".sec-hdr").forEach(el => {
-    el.addEventListener("click", () => {
-      openSec[el.dataset.sec] = !openSec[el.dataset.sec];
-      render();
-    });
+    el.addEventListener("click", () => { openSec[el.dataset.sec] = !openSec[el.dataset.sec]; render(); });
   });
   document.querySelectorAll(".card").forEach(el => {
-    el.addEventListener("click", () => {
-      const idx = parseInt(el.dataset.idx);
-      state[idx] = !state[idx];
-      render();
-    });
+    el.addEventListener("click", () => { state[parseInt(el.dataset.idx)] = !state[parseInt(el.dataset.idx)]; render(); });
   });
-
   updateStats();
 }
 
 function updateStats() {
-  const total = state.length;
   const ok = state.filter(Boolean).length;
   document.getElementById("n-ok").textContent = ok;
-  document.getElementById("n-miss").textContent = total - ok;
-  document.getElementById("n-tot").textContent = total;
+  document.getElementById("n-miss").textContent = state.length - ok;
+  document.getElementById("n-tot").textContent = state.length;
 }
 
 function showToast(msg) {
   const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
+  t.textContent = msg; t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 2500);
 }
 
 function genReport() {
   const emp = document.getElementById("emp").value.trim();
-  const prop = document.getElementById("prop").value.trim();
-  if (!emp || !prop) { showToast("⚠️ Enter your name and property first"); return; }
+  const propVal = document.getElementById("prop").value;
+  if (!emp || !propVal) { showToast("⚠️ Enter your name and select a property"); return; }
+  const [propName, propAddr] = propVal.split("|");
   const now = new Date();
   const ds = now.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
   const ts = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
   let lines = [
     "📋 XTREME-JAX — INVENTORY REPORT",
     "─────────────────────────────",
-    `Employee: ${emp}`,
-    `Property: ${prop}`,
-    `Date: ${ds} ${ts}`,
+    `Employee : ${emp}`,
+    `Property : ${propName}`,
+    `Address  : ${propAddr}`,
+    `Date     : ${ds} ${ts}`,
     "─────────────────────────────"
   ];
   let totalMiss = 0;
@@ -270,13 +277,10 @@ function genReport() {
   });
   lines.push("\n─────────────────────────────", `Total missing: ${totalMiss} item${totalMiss !== 1 ? "s" : ""}`);
   const text = lines.join("\n");
-  const rout = document.getElementById("rout");
-  rout.textContent = text;
-  rout.style.display = "block";
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(() => showToast("✓ Report copied to clipboard!"));
-  }
-  rout.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  document.getElementById("rout").textContent = text;
+  document.getElementById("rout").style.display = "block";
+  if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => showToast("✓ Copied to clipboard!"));
+  document.getElementById("rout").scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 render();
