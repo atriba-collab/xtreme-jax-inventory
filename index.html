@@ -14,8 +14,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .fields{background:#fff;padding:.85rem 1.25rem;border-bottom:1px solid #e5e7eb;display:flex;flex-direction:column;gap:12px}
 .field-label{font-size:11px;color:#6b7280;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .field-label span{color:#ef4444}
-input,select{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;color:#111;background:#f9fafb;appearance:none;-webkit-appearance:none}
-input:focus,select:focus{outline:none;border-color:#0a1628;background:#fff}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;color:#111;background:#f9fafb;appearance:none;-webkit-appearance:none;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#0a1628;background:#fff}
+textarea{resize:none;line-height:1.5}
 .select-wrap{position:relative}
 .select-wrap::after{content:"⌄";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6b7280;font-size:18px;pointer-events:none}
 .prop-info{margin-top:6px;background:#f0f4ff;border-radius:8px;padding:8px 12px;font-size:13px;color:#374151;display:none;line-height:1.5}
@@ -36,6 +37,30 @@ input:focus,select:focus{outline:none;border-color:#0a1628;background:#fff}
 .card-check{width:24px;height:24px;border-radius:6px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:700;transition:all .15s}
 .card.ok .card-check{background:#0a1628;border-color:#0a1628;color:#c9a84c}
 .card-name{font-size:15px;color:#111;line-height:1.35;font-weight:600}
+
+/* Extra requests section */
+.extras-section{margin-top:10px;background:#fff}
+.extras-hdr{padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid #f0f0f0}
+.extras-hdr-left{display:flex;align-items:center;gap:10px}
+.extras-body{padding:1rem 1.25rem;display:flex;flex-direction:column;gap:14px}
+.extras-subtitle{font-size:12px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.extra-items-list{display:flex;flex-direction:column;gap:8px}
+.extra-item-row{display:flex;align-items:center;gap:10px;background:#f9fafb;border-radius:10px;padding:10px 12px;border:1px solid #e5e7eb}
+.extra-item-name{flex:1;font-size:14px;font-weight:600;color:#111}
+.qty-ctrl{display:flex;align-items:center;gap:8px}
+.qty-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid #d1d5db;background:#fff;font-size:18px;font-weight:600;color:#0a1628;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0}
+.qty-btn:active{background:#f0f2f5}
+.qty-num{font-size:16px;font-weight:700;color:#111;min-width:20px;text-align:center}
+.add-custom-row{display:flex;gap:8px}
+.add-custom-row input{flex:1;padding:10px 12px;font-size:14px}
+.btn-add{padding:10px 16px;background:#0a1628;color:#c9a84c;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.custom-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.custom-item{display:flex;align-items:center;gap:10px;background:#fff8ec;border-radius:10px;padding:10px 12px;border:1px solid #f5c842}
+.custom-item-name{flex:1;font-size:14px;font-weight:600;color:#7a5800}
+.custom-qty-ctrl{display:flex;align-items:center;gap:8px}
+.btn-remove{width:28px;height:28px;border-radius:7px;border:none;background:#fee2e2;color:#b91c1c;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.notes-area textarea{min-height:90px}
+
 .footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
 .stat{background:#f9fafb;border-radius:12px;padding:.75rem;text-align:center;border:1px solid #e5e7eb}
@@ -92,6 +117,43 @@ input:focus,select:focus{outline:none;border-color:#0a1628;background:#fff}
 
 <div id="sections"></div>
 
+<!-- EXTRA REQUESTS SECTION -->
+<div class="extras-section">
+  <div class="extras-hdr" onclick="toggleExtras()">
+    <div class="extras-hdr-left">
+      <span class="sec-icon">➕</span>
+      <span class="sec-name">Extra Requests</span>
+      <span class="badge" id="extras-badge" style="background:#e0f2fe;color:#0369a1">Optional</span>
+    </div>
+    <span class="chev open" id="extras-chev">⌄</span>
+  </div>
+  <div class="extras-body" id="extras-body">
+
+    <!-- Common items with qty -->
+    <div>
+      <div class="extras-subtitle">Common items — set quantity needed</div>
+      <div class="extra-items-list" id="common-list"></div>
+    </div>
+
+    <!-- Free text custom items -->
+    <div>
+      <div class="extras-subtitle">Other items — type and add</div>
+      <div class="add-custom-row">
+        <input type="text" id="custom-input" placeholder="e.g. Extra hangers, Toilet paper...">
+        <button class="btn-add" onclick="addCustomItem()">+ Add</button>
+      </div>
+      <div class="custom-list" id="custom-list"></div>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes-area">
+      <div class="extras-subtitle">Additional notes</div>
+      <textarea id="extra-notes" placeholder="Any other comments or special requests..."></textarea>
+    </div>
+
+  </div>
+</div>
+
 <div class="footer">
   <div class="stats">
     <div class="stat"><div class="stat-n good" id="n-ok">0</div><div class="stat-l">OK</div></div>
@@ -121,29 +183,20 @@ const cats = [
   {
     id:"kitchen", label:"Kitchen Supplies", icon:"🍽️",
     items:[
-      "Paper towels (2 backups under sink)",
-      "Sponge (wrapped)",
-      "6 waters in fridge",
-      "Dish towels (min 2)",
-      "Dish soap (min half full)",
-      "Dishwasher pods (min 10)",
-      "Trash bags (min 10)",
-      "Windex spray (min half full)",
-      "Coffee K-Cups","Sugar","Creamer","Salt","Pepper",
-      "Olive oil","Cooking spray","Foil","Plastic wrap","Ziplock bags"
+      "Paper towels (2 backups under sink)","Sponge (wrapped)","6 waters in fridge",
+      "Dish towels (min 2)","Dish soap (min half full)","Dishwasher pods (min 10)",
+      "Trash bags (min 10)","Windex spray (min half full)","Coffee K-Cups",
+      "Sugar","Creamer","Salt","Pepper","Olive oil","Cooking spray",
+      "Foil","Plastic wrap","Ziplock bags"
     ]
   },
   {
     id:"linens", label:"Linens & Bedding", icon:"🛏️",
     items:[
-      "Mattress protector — Twin","Mattress protector — Full",
-      "Mattress protector — Queen","Mattress protector — King",
-      "Fitted sheet — Twin","Fitted sheet — Full",
-      "Fitted sheet — Queen","Fitted sheet — King",
-      "Flat sheet — Twin","Flat sheet — Full",
-      "Flat sheet — Queen","Flat sheet — King",
-      "Pillowcases (set)",
-      "Blanket — Twin","Blanket — Full / Queen","Blanket — King",
+      "Mattress protector — Twin","Mattress protector — Full","Mattress protector — Queen","Mattress protector — King",
+      "Fitted sheet — Twin","Fitted sheet — Full","Fitted sheet — Queen","Fitted sheet — King",
+      "Flat sheet — Twin","Flat sheet — Full","Flat sheet — Queen","Flat sheet — King",
+      "Pillowcases (set)","Blanket — Twin","Blanket — Full / Queen","Blanket — King",
       "Duvet cover — Twin","Duvet cover — Full / Queen","Duvet cover — King",
       "Duvet insert — Twin","Duvet insert — Full / Queen","Duvet insert — King"
     ]
@@ -157,10 +210,22 @@ const cats = [
   }
 ];
 
+// Common extra items with quantities
+const commonExtras = [
+  "Paper towels","Trash bags","Dish soap","Sponge","Toilet paper",
+  "Hand soap","Laundry detergent","Dryer sheets","Cleaning spray","Dish towels"
+];
+const commonQty = {};
+commonExtras.forEach(n => commonQty[n] = 0);
+
+// Custom free-text items
+const customItems = [];
+
 const allItems = [];
 cats.forEach((cat,ci) => cat.items.forEach((name,ii) => allItems.push({ci,ii,name})));
 const state = new Array(allItems.length).fill(false);
 const openSec = {kitchen:true, linens:true, towels:true};
+let extrasOpen = true;
 
 function getIdx(ci,ii){ return allItems.findIndex(x=>x.ci===ci&&x.ii===ii); }
 
@@ -171,6 +236,96 @@ function onPropChange(){
   const [name,addr] = val.split("|");
   info.innerHTML = `<strong>${name}</strong><br>${addr}`;
   info.style.display = "block";
+}
+
+function toggleExtras(){
+  extrasOpen = !extrasOpen;
+  document.getElementById("extras-body").style.display = extrasOpen ? "flex" : "none";
+  document.getElementById("extras-chev").classList.toggle("open", extrasOpen);
+}
+
+function renderCommon(){
+  const list = document.getElementById("common-list");
+  list.innerHTML = "";
+  commonExtras.forEach(name => {
+    const qty = commonQty[name];
+    const row = document.createElement("div");
+    row.className = "extra-item-row";
+    row.innerHTML = `
+      <div class="extra-item-name">${name}</div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${name}',-1)">−</button>
+        <span class="qty-num" id="qty-${name.replace(/ /g,'_')}">${qty}</span>
+        <button class="qty-btn" onclick="changeQty('${name}',1)">+</button>
+      </div>`;
+    list.appendChild(row);
+  });
+  updateExtrasBadge();
+}
+
+function changeQty(name, delta){
+  commonQty[name] = Math.max(0, (commonQty[name]||0) + delta);
+  const el = document.getElementById("qty-"+name.replace(/ /g,'_'));
+  if(el) el.textContent = commonQty[name];
+  updateExtrasBadge();
+}
+
+function renderCustom(){
+  const list = document.getElementById("custom-list");
+  list.innerHTML = "";
+  customItems.forEach((item, idx) => {
+    const row = document.createElement("div");
+    row.className = "custom-item";
+    row.innerHTML = `
+      <div class="custom-item-name">${item.name}</div>
+      <div class="custom-qty-ctrl">
+        <button class="qty-btn" onclick="changeCustomQty(${idx},-1)">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="qty-btn" onclick="changeCustomQty(${idx},1)">+</button>
+      </div>
+      <button class="btn-remove" onclick="removeCustom(${idx})">×</button>`;
+    list.appendChild(row);
+  });
+  updateExtrasBadge();
+}
+
+function addCustomItem(){
+  const inp = document.getElementById("custom-input");
+  const val = inp.value.trim();
+  if(!val) return;
+  customItems.push({name:val, qty:1});
+  inp.value = "";
+  renderCustom();
+}
+
+document.getElementById("custom-input").addEventListener("keydown", e => {
+  if(e.key === "Enter"){ e.preventDefault(); addCustomItem(); }
+});
+
+function changeCustomQty(idx, delta){
+  customItems[idx].qty = Math.max(1, customItems[idx].qty + delta);
+  renderCustom();
+}
+
+function removeCustom(idx){
+  customItems.splice(idx,1);
+  renderCustom();
+}
+
+function updateExtrasBadge(){
+  const badge = document.getElementById("extras-badge");
+  const commonCount = Object.values(commonQty).filter(q=>q>0).length;
+  const customCount = customItems.length;
+  const total = commonCount + customCount;
+  if(total > 0){
+    badge.textContent = `${total} item${total!==1?"s":""} requested`;
+    badge.style.background = "#fef3c7";
+    badge.style.color = "#92400e";
+  } else {
+    badge.textContent = "Optional";
+    badge.style.background = "#e0f2fe";
+    badge.style.color = "#0369a1";
+  }
 }
 
 function render(){
@@ -260,6 +415,20 @@ function buildReport(){
       lines.push(`\n✅ ${cat.label.toUpperCase()}: All good`);
     }
   });
+
+  // Extras
+  const commonRequested = commonExtras.filter(n=>commonQty[n]>0);
+  const hasExtras = commonRequested.length > 0 || customItems.length > 0;
+  const notes = document.getElementById("extra-notes").value.trim();
+
+  if(hasExtras || notes){
+    lines.push("\n─────────────────────────────");
+    lines.push("🛒 EXTRA REQUESTS:");
+    commonRequested.forEach(n => lines.push(`  • ${n} — qty: ${commonQty[n]}`));
+    customItems.forEach(it => lines.push(`  • ${it.name} — qty: ${it.qty}`));
+    if(notes) lines.push(`\n📝 Notes: ${notes}`);
+  }
+
   lines.push("\n─────────────────────────────",`Total missing: ${totalMiss} item${totalMiss!==1?"s":""}`);
   return lines.join("\n");
 }
@@ -283,6 +452,7 @@ function copyReport(){
 }
 
 render();
+renderCommon();
 </script>
 </body>
 </html>
