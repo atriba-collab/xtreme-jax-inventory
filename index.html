@@ -15,7 +15,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .field-label{font-size:11px;color:#6b7280;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .field-label span{color:#ef4444}
 input, select{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;color:#111;background:#f9fafb;appearance:none;-webkit-appearance:none}
-input:focus, select:focus{outline:none;border-color:#0a1628;background:#fff}
+input:focus,select:focus{outline:none;border-color:#0a1628;background:#fff}
 .select-wrap{position:relative}
 .select-wrap::after{content:"⌄";position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#6b7280;font-size:18px;pointer-events:none}
 .prop-info{margin-top:6px;background:#f0f4ff;border-radius:8px;padding:8px 12px;font-size:13px;color:#374151;display:none;line-height:1.5}
@@ -31,14 +31,14 @@ input:focus, select:focus{outline:none;border-color:#0a1628;background:#fff}
 .chev{font-size:20px;color:#9ca3af;transition:transform .25s;display:inline-block}
 .chev.open{transform:rotate(180deg)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 1.25rem 12px;background:#f0f2f5}
-.card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.card.ok{border-color:#0a1628;box-shadow:0 2px 8px rgba(10,22,40,.2)}
-.card-img{width:100%;height:110px;object-fit:contain;display:block;background:#f8f9fa;padding:8px}
-.card-fallback{width:100%;height:110px;display:flex;align-items:center;justify-content:center;background:#f3f4f6;font-size:48px}
-.card-body{padding:8px 10px 10px;display:flex;align-items:flex-start;gap:6px}
-.card-check{width:18px;height:18px;border-radius:4px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;margin-top:1px;transition:all .15s}
+.card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:border-color .15s,box-shadow .15s,background .15s}
+.card.ok{border-color:#0a1628;background:#f0f6f0;box-shadow:0 2px 8px rgba(10,22,40,.15)}
+.card-icon{height:90px;display:flex;align-items:center;justify-content:center;font-size:52px;background:#f8f9fa;transition:background .15s;user-select:none;line-height:1}
+.card.ok .card-icon{background:#e8f5e8}
+.card-body{padding:10px 10px 12px;display:flex;align-items:flex-start;gap:8px;border-top:1px solid #f0f0f0}
+.card-check{width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;margin-top:1px;transition:all .15s}
 .card.ok .card-check{background:#0a1628;border-color:#0a1628;color:#c9a84c}
-.card-name{font-size:12px;color:#374151;line-height:1.4;font-weight:500}
+.card-name{font-size:13px;color:#374151;line-height:1.4;font-weight:500}
 .footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
 .stat{background:#f9fafb;border-radius:12px;padding:.75rem;text-align:center;border:1px solid #e5e7eb}
@@ -75,7 +75,7 @@ input:focus, select:focus{outline:none;border-color:#0a1628;background:#fff}
         <option value="Villa Bella|2691 Isabella Blvd, Jacksonville, FL 32250">Villa Bella</option>
         <option value="AquaTerra|237 33rd Ave S, Jacksonville Beach, FL 32250">AquaTerra</option>
         <option value="Azure|123 12th Ave S, Jacksonville Beach, FL 32250">Azure</option>
-        <option value="Welcome Homes SurfMood|SurfMood 15th Ave N, Jacksonville Beach, FL 32250">Welcome Homes SurfMood</option>
+        <option value="Welcome Homes SurfMood|15th Ave N, Jacksonville Beach, FL 32250">Welcome Homes SurfMood</option>
         <option value="Welcome Homes H2O|130 32nd Ave S, Jacksonville Beach, FL 32250">Welcome Homes H2O</option>
         <option value="PV Escape|4158 Ponce de León Blvd, Jacksonville, FL 32250">PV Escape</option>
         <option value="Beach Please|220 32nd Ave S, Jacksonville Beach, FL 32250">Beach Please</option>
@@ -104,109 +104,106 @@ input:focus, select:focus{outline:none;border-color:#0a1628;background:#fff}
 <script>
 const cats = [
   {
-    id: "kitchen", label: "Kitchen Supplies", icon: "🍽️",
-    items: [
-      { name: "Paper towels\n(2 backups under sink)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Paper_towel.jpg/320px-Paper_towel.jpg" },
-      { name: "Sponge\n(wrapped)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Sponge_for_cleaning.jpg/320px-Sponge_for_cleaning.jpg" },
-      { name: "6 waters\nin fridge", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Water_bottle.jpg/240px-Water_bottle.jpg" },
-      { name: "Dish towels\n(min 2)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Flickr_-_cyclonebill_-_Viskestykke.jpg/320px-Flickr_-_cyclonebill_-_Viskestykke.jpg" },
-      { name: "Dish soap\n(min half full)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Dawn_dish_soap.jpg/240px-Dawn_dish_soap.jpg" },
-      { name: "Dishwasher pods\n(min 10)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Cascade_ActionPacs.jpg/240px-Cascade_ActionPacs.jpg" },
-      { name: "Trash bags\n(min 10)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Hefty_trash_bags.jpg/240px-Hefty_trash_bags.jpg" },
-      { name: "Windex spray\n(min half full)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Windex.jpg/240px-Windex.jpg" },
-      { name: "Coffee K-Cups", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG" },
-      { name: "Sugar", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Refined_Sugar_P1410031.jpg/320px-Refined_Sugar_P1410031.jpg" },
-      { name: "Creamer", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Coffee-creamer.jpg/320px-Coffee-creamer.jpg" },
-      { name: "Salt", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Salt_shaker_on_white_background.jpg/240px-Salt_shaker_on_white_background.jpg" },
-      { name: "Pepper", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Black_pepper_shaker.jpg/240px-Black_pepper_shaker.jpg" },
-      { name: "Olive oil", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Olive_oil_from_Oneglia.jpg/240px-Olive_oil_from_Oneglia.jpg" },
-      { name: "Cooking spray", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Pam_cooking_spray.jpg/240px-Pam_cooking_spray.jpg" },
-      { name: "Foil", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Reynolds_Wrap_Aluminum_Foil.jpg/240px-Reynolds_Wrap_Aluminum_Foil.jpg" },
-      { name: "Plastic wrap", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Plastic_wrap.jpg/240px-Plastic_wrap.jpg" },
-      { name: "Ziplock bags", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Ziploc_storage_bag.jpg/320px-Ziploc_storage_bag.jpg" }
+    id:"kitchen", label:"Kitchen Supplies", icon:"🍽️",
+    items:[
+      {name:"Paper towels\n(2 backups under sink)", e:"🧻"},
+      {name:"Sponge\n(wrapped)", e:"🧽"},
+      {name:"6 waters in fridge", e:"💧"},
+      {name:"Dish towels\n(min 2)", e:"🪣"},
+      {name:"Dish soap\n(min half full)", e:"🧴"},
+      {name:"Dishwasher pods\n(min 10)", e:"🫧"},
+      {name:"Trash bags\n(min 10)", e:"🗑️"},
+      {name:"Windex spray\n(min half full)", e:"🪟"},
+      {name:"Coffee K-Cups", e:"☕"},
+      {name:"Sugar", e:"🍬"},
+      {name:"Creamer", e:"🥛"},
+      {name:"Salt", e:"🧂"},
+      {name:"Pepper", e:"🫙"},
+      {name:"Olive oil", e:"🫒"},
+      {name:"Cooking spray", e:"🥫"},
+      {name:"Foil", e:"✨"},
+      {name:"Plastic wrap", e:"📦"},
+      {name:"Ziplock bags", e:"🛍️"}
     ]
   },
   {
-    id: "linens", label: "Linens & Bedding", icon: "🛏️",
-    items: [
-      { name: "Mattress protector — Twin",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Mattress protector — Full",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Mattress protector — Queen",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Mattress protector — King",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
-      { name: "Fitted sheet — Twin",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Fitted sheet — Full",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Fitted sheet — Queen",         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Fitted sheet — King",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
-      { name: "Flat sheet — Twin",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Flat sheet — Full",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Flat sheet — Queen",           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Flat sheet — King",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
-      { name: "Pillowcases (set)",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Pillowcase.jpg/320px-Pillowcase.jpg" },
-      { name: "Blanket — Twin",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
-      { name: "Blanket — Full/Queen",         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
-      { name: "Blanket — King",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
-      { name: "Duvet cover — Twin",           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
-      { name: "Duvet cover — Full/Queen",     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
-      { name: "Duvet cover — King",           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
-      { name: "Duvet insert — Twin",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
-      { name: "Duvet insert — Full/Queen",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
-      { name: "Duvet insert — King",          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" }
+    id:"linens", label:"Linens & Bedding", icon:"🛏️",
+    items:[
+      {name:"Mattress protector\nTwin", e:"🛏️"},
+      {name:"Mattress protector\nFull", e:"🛏️"},
+      {name:"Mattress protector\nQueen", e:"🛏️"},
+      {name:"Mattress protector\nKing", e:"🛏️"},
+      {name:"Fitted sheet\nTwin", e:"🛌"},
+      {name:"Fitted sheet\nFull", e:"🛌"},
+      {name:"Fitted sheet\nQueen", e:"🛌"},
+      {name:"Fitted sheet\nKing", e:"🛌"},
+      {name:"Flat sheet\nTwin", e:"🛌"},
+      {name:"Flat sheet\nFull", e:"🛌"},
+      {name:"Flat sheet\nQueen", e:"🛌"},
+      {name:"Flat sheet\nKing", e:"🛌"},
+      {name:"Pillowcases\n(set)", e:"😴"},
+      {name:"Blanket\nTwin", e:"🧣"},
+      {name:"Blanket\nFull / Queen", e:"🧣"},
+      {name:"Blanket\nKing", e:"🧣"},
+      {name:"Duvet cover\nTwin", e:"🌙"},
+      {name:"Duvet cover\nFull / Queen", e:"🌙"},
+      {name:"Duvet cover\nKing", e:"🌙"},
+      {name:"Duvet insert\nTwin", e:"☁️"},
+      {name:"Duvet insert\nFull / Queen", e:"☁️"},
+      {name:"Duvet insert\nKing", e:"☁️"}
     ]
   },
   {
-    id: "towels", label: "Towels & Bath", icon: "🛁",
-    items: [
-      { name: "Bath towels (set of 4)",  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Towel.jpg/320px-Towel.jpg" },
-      { name: "Hand towels (set of 4)",  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Folded_hand_towel.jpg/320px-Folded_hand_towel.jpg" },
-      { name: "Washcloths (set of 4)",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Washcloth.jpg/320px-Washcloth.jpg" },
-      { name: "Pool / beach towels",     img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Beach_towel.jpg/320px-Beach_towel.jpg" },
-      { name: "Bath mat",                img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Bathroom_mat.jpg/320px-Bathroom_mat.jpg" }
+    id:"towels", label:"Towels & Bath", icon:"🛁",
+    items:[
+      {name:"Bath towels\n(set of 4)", e:"🛁"},
+      {name:"Hand towels\n(set of 4)", e:"🙌"},
+      {name:"Washcloths\n(set of 4)", e:"🧼"},
+      {name:"Pool / beach towels", e:"🏖️"},
+      {name:"Bath mat", e:"🪴"}
     ]
   }
 ];
 
 const allItems = [];
-cats.forEach((cat, ci) => cat.items.forEach((item, ii) => allItems.push({ ci, ii, cat: cat.id, name: item.name, img: item.img })));
+cats.forEach((cat,ci) => cat.items.forEach((item,ii) => allItems.push({ci,ii,name:item.name,e:item.e})));
 const state = new Array(allItems.length).fill(false);
-const openSec = { kitchen: true, linens: true, towels: true };
+const openSec = {kitchen:true, linens:true, towels:true};
 
-function getIdx(ci, ii) { return allItems.findIndex(x => x.ci === ci && x.ii === ii); }
+function getIdx(ci,ii){ return allItems.findIndex(x=>x.ci===ci&&x.ii===ii); }
 
-function onPropChange() {
-  const sel = document.getElementById("prop");
-  const val = sel.value;
+function onPropChange(){
+  const val = document.getElementById("prop").value;
   const info = document.getElementById("prop-info");
-  if (!val) { info.style.display = "none"; return; }
-  const [name, addr] = val.split("|");
+  if(!val){info.style.display="none";return;}
+  const [name,addr] = val.split("|");
   info.innerHTML = `<strong>${name}</strong><br>${addr}`;
   info.style.display = "block";
 }
 
-function render() {
+function render(){
   const cont = document.getElementById("sections");
   cont.innerHTML = "";
-  cats.forEach((cat, ci) => {
-    const catItems = allItems.filter(x => x.ci === ci);
-    const miss = catItems.filter(x => !state[allItems.indexOf(x)]).length;
+  cats.forEach((cat,ci)=>{
+    const catItems = allItems.filter(x=>x.ci===ci);
+    const miss = catItems.filter(x=>!state[allItems.indexOf(x)]).length;
     const isOpen = openSec[cat.id];
-    const badgeHtml = miss > 0
+    const badgeHtml = miss>0
       ? `<span class="badge miss">${miss} missing</span>`
       : `<span class="badge ok">All good ✓</span>`;
     const sec = document.createElement("div");
     sec.className = "section";
     let gridHtml = "";
-    if (isOpen) {
-      cat.items.forEach((item, ii) => {
-        const idx = getIdx(ci, ii);
+    if(isOpen){
+      cat.items.forEach((item,ii)=>{
+        const idx = getIdx(ci,ii);
         const ok = state[idx];
-        const nameHtml = item.name.replace(/\n/g, "<br>");
+        const nameHtml = item.name.replace(/\n/g,"<br>");
         gridHtml += `
-          <div class="card${ok ? " ok" : ""}" data-idx="${idx}">
-            <img class="card-img" src="${item.img}" alt="${item.name.replace(/\n/g, " ")}"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="card-fallback" style="display:none">${cat.icon}</div>
+          <div class="card${ok?" ok":""}" data-idx="${idx}">
+            <div class="card-icon">${item.e}</div>
             <div class="card-body">
-              <div class="card-check">${ok ? "✓" : ""}</div>
+              <div class="card-check">${ok?"✓":""}</div>
               <div class="card-name">${nameHtml}</div>
             </div>
           </div>`;
@@ -219,43 +216,43 @@ function render() {
           <span class="sec-name">${cat.label}</span>
           ${badgeHtml}
         </div>
-        <span class="chev${isOpen ? " open" : ""}">⌄</span>
+        <span class="chev${isOpen?" open":""}">⌄</span>
       </div>
-      ${isOpen ? `<div class="grid">${gridHtml}</div>` : ""}`;
+      ${isOpen?`<div class="grid">${gridHtml}</div>`:""}`;
     cont.appendChild(sec);
   });
 
-  document.querySelectorAll(".sec-hdr").forEach(el => {
-    el.addEventListener("click", () => { openSec[el.dataset.sec] = !openSec[el.dataset.sec]; render(); });
+  document.querySelectorAll(".sec-hdr").forEach(el=>{
+    el.addEventListener("click",()=>{ openSec[el.dataset.sec]=!openSec[el.dataset.sec]; render(); });
   });
-  document.querySelectorAll(".card").forEach(el => {
-    el.addEventListener("click", () => { state[parseInt(el.dataset.idx)] = !state[parseInt(el.dataset.idx)]; render(); });
+  document.querySelectorAll(".card").forEach(el=>{
+    el.addEventListener("click",()=>{ state[parseInt(el.dataset.idx)]=!state[parseInt(el.dataset.idx)]; render(); });
   });
   updateStats();
 }
 
-function updateStats() {
+function updateStats(){
   const ok = state.filter(Boolean).length;
   document.getElementById("n-ok").textContent = ok;
-  document.getElementById("n-miss").textContent = state.length - ok;
+  document.getElementById("n-miss").textContent = state.length-ok;
   document.getElementById("n-tot").textContent = state.length;
 }
 
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2500);
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2500);
 }
 
-function genReport() {
+function genReport(){
   const emp = document.getElementById("emp").value.trim();
   const propVal = document.getElementById("prop").value;
-  if (!emp || !propVal) { showToast("⚠️ Enter your name and select a property"); return; }
-  const [propName, propAddr] = propVal.split("|");
+  if(!emp||!propVal){showToast("⚠️ Enter your name and select a property");return;}
+  const [propName,propAddr] = propVal.split("|");
   const now = new Date();
-  const ds = now.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
-  const ts = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-  let lines = [
+  const ds = now.toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});
+  const ts = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  let lines=[
     "📋 XTREME-JAX — INVENTORY REPORT",
     "─────────────────────────────",
     `Employee : ${emp}`,
@@ -264,23 +261,23 @@ function genReport() {
     `Date     : ${ds} ${ts}`,
     "─────────────────────────────"
   ];
-  let totalMiss = 0;
-  cats.forEach((cat, ci) => {
-    const miss = cat.items.filter((_, ii) => !state[getIdx(ci, ii)]);
-    if (miss.length) {
+  let totalMiss=0;
+  cats.forEach((cat,ci)=>{
+    const miss=cat.items.filter((_,ii)=>!state[getIdx(ci,ii)]);
+    if(miss.length){
       lines.push(`\n🔴 ${cat.label.toUpperCase()} — NEEDS RESTOCK:`);
-      miss.forEach(m => lines.push(`  • ${m.name.replace(/\n/g, " ")}`));
-      totalMiss += miss.length;
-    } else {
+      miss.forEach(m=>lines.push(`  • ${m.name.replace(/\n/g," ")}`));
+      totalMiss+=miss.length;
+    }else{
       lines.push(`\n✅ ${cat.label.toUpperCase()}: All good`);
     }
   });
-  lines.push("\n─────────────────────────────", `Total missing: ${totalMiss} item${totalMiss !== 1 ? "s" : ""}`);
-  const text = lines.join("\n");
-  document.getElementById("rout").textContent = text;
-  document.getElementById("rout").style.display = "block";
-  if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => showToast("✓ Copied to clipboard!"));
-  document.getElementById("rout").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  lines.push("\n─────────────────────────────",`Total missing: ${totalMiss} item${totalMiss!==1?"s":""}`);
+  const text=lines.join("\n");
+  document.getElementById("rout").textContent=text;
+  document.getElementById("rout").style.display="block";
+  if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showToast("✓ Copied to clipboard!"));
+  document.getElementById("rout").scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 render();
