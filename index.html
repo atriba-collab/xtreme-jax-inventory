@@ -31,14 +31,11 @@ input:focus,select:focus{outline:none;border-color:#0a1628;background:#fff}
 .chev{font-size:20px;color:#9ca3af;transition:transform .25s;display:inline-block}
 .chev.open{transform:rotate(180deg)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 1.25rem 12px;background:#f0f2f5}
-.card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:border-color .15s,box-shadow .15s,background .15s}
+.card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:border-color .15s,box-shadow .15s,background .15s;display:flex;align-items:center;padding:18px 14px;min-height:80px;gap:14px}
 .card.ok{border-color:#0a1628;background:#f0f6f0;box-shadow:0 2px 8px rgba(10,22,40,.15)}
-.card-icon{height:90px;display:flex;align-items:center;justify-content:center;font-size:52px;background:#f8f9fa;transition:background .15s;user-select:none;line-height:1}
-.card.ok .card-icon{background:#e8f5e8}
-.card-body{padding:10px 10px 12px;display:flex;align-items:flex-start;gap:8px;border-top:1px solid #f0f0f0}
-.card-check{width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;margin-top:1px;transition:all .15s}
+.card-check{width:24px;height:24px;border-radius:6px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;font-weight:700;transition:all .15s}
 .card.ok .card-check{background:#0a1628;border-color:#0a1628;color:#c9a84c}
-.card-name{font-size:13px;color:#374151;line-height:1.4;font-weight:500}
+.card-name{font-size:15px;color:#111;line-height:1.35;font-weight:600}
 .footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
 .stat{background:#f9fafb;border-radius:12px;padding:.75rem;text-align:center;border:1px solid #e5e7eb}
@@ -118,67 +115,67 @@ const cats = [
   {
     id:"kitchen", label:"Kitchen Supplies", icon:"🍽️",
     items:[
-      {name:"Paper towels\n(2 backups under sink)", e:"🧻"},
-      {name:"Sponge\n(wrapped)", e:"🧽"},
-      {name:"6 waters in fridge", e:"💧"},
-      {name:"Dish towels\n(min 2)", e:"🪣"},
-      {name:"Dish soap\n(min half full)", e:"🧴"},
-      {name:"Dishwasher pods\n(min 10)", e:"🫧"},
-      {name:"Trash bags\n(min 10)", e:"🗑️"},
-      {name:"Windex spray\n(min half full)", e:"🪟"},
-      {name:"Coffee K-Cups", e:"☕"},
-      {name:"Sugar", e:"🍬"},
-      {name:"Creamer", e:"🥛"},
-      {name:"Salt", e:"🧂"},
-      {name:"Pepper", e:"🫙"},
-      {name:"Olive oil", e:"🫒"},
-      {name:"Cooking spray", e:"🥫"},
-      {name:"Foil", e:"✨"},
-      {name:"Plastic wrap", e:"📦"},
-      {name:"Ziplock bags", e:"🛍️"}
+      "Paper towels (2 backups under sink)",
+      "Sponge (wrapped)",
+      "6 waters in fridge",
+      "Dish towels (min 2)",
+      "Dish soap (min half full)",
+      "Dishwasher pods (min 10)",
+      "Trash bags (min 10)",
+      "Windex spray (min half full)",
+      "Coffee K-Cups",
+      "Sugar",
+      "Creamer",
+      "Salt",
+      "Pepper",
+      "Olive oil",
+      "Cooking spray",
+      "Foil",
+      "Plastic wrap",
+      "Ziplock bags"
     ]
   },
   {
     id:"linens", label:"Linens & Bedding", icon:"🛏️",
     items:[
-      {name:"Mattress protector\nTwin", e:"🛏️"},
-      {name:"Mattress protector\nFull", e:"🛏️"},
-      {name:"Mattress protector\nQueen", e:"🛏️"},
-      {name:"Mattress protector\nKing", e:"🛏️"},
-      {name:"Fitted sheet\nTwin", e:"🛌"},
-      {name:"Fitted sheet\nFull", e:"🛌"},
-      {name:"Fitted sheet\nQueen", e:"🛌"},
-      {name:"Fitted sheet\nKing", e:"🛌"},
-      {name:"Flat sheet\nTwin", e:"🛌"},
-      {name:"Flat sheet\nFull", e:"🛌"},
-      {name:"Flat sheet\nQueen", e:"🛌"},
-      {name:"Flat sheet\nKing", e:"🛌"},
-      {name:"Pillowcases\n(set)", e:"😴"},
-      {name:"Blanket\nTwin", e:"🧣"},
-      {name:"Blanket\nFull / Queen", e:"🧣"},
-      {name:"Blanket\nKing", e:"🧣"},
-      {name:"Duvet cover\nTwin", e:"🌙"},
-      {name:"Duvet cover\nFull / Queen", e:"🌙"},
-      {name:"Duvet cover\nKing", e:"🌙"},
-      {name:"Duvet insert\nTwin", e:"☁️"},
-      {name:"Duvet insert\nFull / Queen", e:"☁️"},
-      {name:"Duvet insert\nKing", e:"☁️"}
+      "Mattress protector — Twin",
+      "Mattress protector — Full",
+      "Mattress protector — Queen",
+      "Mattress protector — King",
+      "Fitted sheet — Twin",
+      "Fitted sheet — Full",
+      "Fitted sheet — Queen",
+      "Fitted sheet — King",
+      "Flat sheet — Twin",
+      "Flat sheet — Full",
+      "Flat sheet — Queen",
+      "Flat sheet — King",
+      "Pillowcases (set)",
+      "Blanket — Twin",
+      "Blanket — Full / Queen",
+      "Blanket — King",
+      "Duvet cover — Twin",
+      "Duvet cover — Full / Queen",
+      "Duvet cover — King",
+      "Duvet insert — Twin",
+      "Duvet insert — Full / Queen",
+      "Duvet insert — King"
     ]
   },
   {
     id:"towels", label:"Towels & Bath", icon:"🛁",
     items:[
-      {name:"Bath towels\n(set of 4)", e:"🛁"},
-      {name:"Hand towels\n(set of 4)", e:"🙌"},
-      {name:"Washcloths\n(set of 4)", e:"🧼"},
-      {name:"Pool / beach towels", e:"🏖️"},
-      {name:"Bath mat", e:"🪴"}
+      "Bath towels (set of 4)",
+      "Hand towels (set of 4)",
+      "Washcloths (set of 4)",
+      "Pool / beach towels",
+      "Bath mat"
     ]
   }
 ];
 
 const allItems = [];
-cats.forEach((cat,ci) => cat.items.forEach((item,ii) => allItems.push({ci,ii,name:item.name,e:item.e})));
+cats.forEach((cat,ci) => cat.items.forEach((name,ii) => allItems.push({ci,ii,name})));
 const state = new Array(allItems.length).fill(false);
 const openSec = {kitchen:true, linens:true, towels:true};
 
@@ -207,17 +204,13 @@ function render(){
     sec.className = "section";
     let gridHtml = "";
     if(isOpen){
-      cat.items.forEach((item,ii)=>{
+      cat.items.forEach((name,ii)=>{
         const idx = getIdx(ci,ii);
         const ok = state[idx];
-        const nameHtml = item.name.replace(/\n/g,"<br>");
         gridHtml += `
           <div class="card${ok?" ok":""}" data-idx="${idx}">
-            <div class="card-icon">${item.e}</div>
-            <div class="card-body">
-              <div class="card-check">${ok?"✓":""}</div>
-              <div class="card-name">${nameHtml}</div>
-            </div>
+            <div class="card-check">${ok?"✓":""}</div>
+            <div class="card-name">${name}</div>
           </div>`;
       });
     }
@@ -278,7 +271,7 @@ function buildReport(){
     const miss=cat.items.filter((_,ii)=>!state[getIdx(ci,ii)]);
     if(miss.length){
       lines.push(`\n🔴 ${cat.label.toUpperCase()} — NEEDS RESTOCK:`);
-      miss.forEach(m=>lines.push(`  • ${m.name.replace(/\n/g," ")}`));
+      miss.forEach(m=>lines.push(`  • ${m}`));
       totalMiss+=miss.length;
     }else{
       lines.push(`\n✅ ${cat.label.toUpperCase()}: All good`);
@@ -289,23 +282,19 @@ function buildReport(){
 }
 
 function showReport(text){
-  const rout = document.getElementById("rout");
-  rout.textContent = text;
-  rout.style.display = "block";
+  const rout=document.getElementById("rout");
+  rout.textContent=text; rout.style.display="block";
   rout.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 function sendWhatsApp(){
-  const text = buildReport();
-  if(!text) return;
+  const text=buildReport(); if(!text)return;
   showReport(text);
-  const encoded = encodeURIComponent(text);
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`, "_blank");
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`,"_blank");
 }
 
 function copyReport(){
-  const text = buildReport();
-  if(!text) return;
+  const text=buildReport(); if(!text)return;
   showReport(text);
   if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showToast("✓ Copied to clipboard!"));
 }
