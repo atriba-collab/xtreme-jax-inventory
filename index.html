@@ -24,28 +24,28 @@ input:focus{outline:none;border-color:#0a1628;background:#fff}
 .badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
 .badge.miss{background:#fef3c7;color:#92400e}
 .badge.ok{background:#d1fae5;color:#065f46}
-.chev{font-size:20px;color:#9ca3af;transition:transform .25s}
+.chev{font-size:20px;color:#9ca3af;transition:transform .25s;display:inline-block}
 .chev.open{transform:rotate(180deg)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 1.25rem 12px;background:#f0f2f5}
 .card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.card.ok{border-color:#0a1628;box-shadow:0 2px 8px rgba(10,22,40,.15)}
-.card-img{width:100%;height:110px;object-fit:cover;display:block;background:#f3f4f6}
-.card-img.fallback{display:flex;align-items:center;justify-content:center;font-size:48px}
-.card-body{padding:8px 10px 10px}
-.card-check{width:18px;height:18px;border-radius:4px;border:2px solid #d1d5db;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-right:5px;flex-shrink:0;font-size:11px;font-weight:700;transition:all .15s}
+.card.ok{border-color:#0a1628;box-shadow:0 2px 8px rgba(10,22,40,.2)}
+.card-img{width:100%;height:110px;object-fit:contain;display:block;background:#f8f9fa;padding:8px}
+.card-fallback{width:100%;height:110px;display:flex;align-items:center;justify-content:center;background:#f3f4f6;font-size:48px}
+.card-body{padding:8px 10px 10px;display:flex;align-items:flex-start;gap:6px}
+.card-check{width:18px;height:18px;border-radius:4px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;margin-top:1px;transition:all .15s}
 .card.ok .card-check{background:#0a1628;border-color:#0a1628;color:#c9a84c}
-.card-name{font-size:12px;color:#374151;vertical-align:middle;line-height:1.35;font-weight:500}
-.footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem;border-top:1px solid #e5e7eb}
+.card-name{font-size:12px;color:#374151;line-height:1.4;font-weight:500}
+.footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
 .stat{background:#f9fafb;border-radius:12px;padding:.75rem;text-align:center;border:1px solid #e5e7eb}
 .stat-n{font-size:24px;font-weight:700;color:#111}
 .stat-n.warn{color:#d97706}
 .stat-n.good{color:#059669}
 .stat-l{font-size:11px;color:#6b7280;margin-top:2px;font-weight:500}
-.btn{width:100%;padding:14px;background:#0a1628;color:#c9a84c;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .15s}
+.btn{width:100%;padding:14px;background:#0a1628;color:#c9a84c;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.04em}
 .btn:active{opacity:.85}
 .rout{margin-top:.85rem;background:#f9fafb;border-radius:12px;padding:1rem;font-size:12.5px;white-space:pre-wrap;display:none;border:1px solid #e5e7eb;color:#374151;line-height:1.6}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#0a1628;color:#c9a84c;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#0a1628;color:#c9a84c;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
 </head>
@@ -83,154 +83,200 @@ input:focus{outline:none;border-color:#0a1628;background:#fff}
 <div class="toast" id="toast"></div>
 
 <script>
-const cats=[
-  {id:"kitchen",label:"Kitchen Supplies",icon:"🍽️",items:[
-    {name:"Paper towels\n(2 backups under sink)",img:"https://m.media-amazon.com/images/I/81M7G1W06fL._AC_SL1500_.jpg"},
-    {name:"Sponge\n(wrapped)",img:"https://m.media-amazon.com/images/I/71UGHiXM+6L._AC_SL1500_.jpg"},
-    {name:"6 waters\nin fridge",img:"https://m.media-amazon.com/images/I/61qLuCVNh2L._AC_SL1500_.jpg"},
-    {name:"Dish towels\n(min 2)",img:"https://m.media-amazon.com/images/I/81mJ+JfFBwL._AC_SL1500_.jpg"},
-    {name:"Dish soap\n(min half full)",img:"https://m.media-amazon.com/images/I/61MVvBG0ARL._AC_SL1500_.jpg"},
-    {name:"Dishwasher pods\n(min 10)",img:"https://m.media-amazon.com/images/I/71U2xJLzaEL._AC_SL1500_.jpg"},
-    {name:"Trash bags\n(min 10)",img:"https://m.media-amazon.com/images/I/81+ZFIjkGvL._AC_SL1500_.jpg"},
-    {name:"Windex spray\n(min half full)",img:"https://m.media-amazon.com/images/I/71VvuS0VQBL._AC_SL1500_.jpg"},
-    {name:"Coffee K-Cups",img:"https://m.media-amazon.com/images/I/81CsULqNGnL._AC_SL1500_.jpg"},
-    {name:"Sugar",img:"https://m.media-amazon.com/images/I/81yS4QXBNPL._AC_SL1500_.jpg"},
-    {name:"Creamer",img:"https://m.media-amazon.com/images/I/71gPQpDJrNL._AC_SL1500_.jpg"},
-    {name:"Salt",img:"https://m.media-amazon.com/images/I/81F-WfQrX5L._AC_SL1500_.jpg"},
-    {name:"Pepper",img:"https://m.media-amazon.com/images/I/81zQ5Vq7g2L._AC_SL1500_.jpg"},
-    {name:"Olive oil",img:"https://m.media-amazon.com/images/I/712iBLHf9KL._AC_SL1500_.jpg"},
-    {name:"Cooking spray",img:"https://m.media-amazon.com/images/I/71qHNFD+HNL._AC_SL1500_.jpg"},
-    {name:"Foil",img:"https://m.media-amazon.com/images/I/81D9lRQz5WL._AC_SL1500_.jpg"},
-    {name:"Plastic wrap",img:"https://m.media-amazon.com/images/I/71FVHjCGcqL._AC_SL1500_.jpg"},
-    {name:"Ziplock bags",img:"https://m.media-amazon.com/images/I/71JxM3KKIHL._AC_SL1500_.jpg"}
-  ]},
-  {id:"linens",label:"Linens & Bedding",icon:"🛏️",items:[
-    {name:"Mattress protector\nTwin",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
-    {name:"Mattress protector\nFull",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
-    {name:"Mattress protector\nQueen",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
-    {name:"Mattress protector\nKing",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
-    {name:"Fitted sheet\nTwin",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
-    {name:"Fitted sheet\nFull",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
-    {name:"Fitted sheet\nQueen",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
-    {name:"Fitted sheet\nKing",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
-    {name:"Flat sheet\nTwin",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
-    {name:"Flat sheet\nFull",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
-    {name:"Flat sheet\nQueen",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
-    {name:"Flat sheet\nKing",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
-    {name:"Pillowcases\n(set)",img:"https://m.media-amazon.com/images/I/81nFKbzO1LL._AC_SL1500_.jpg"},
-    {name:"Blanket\nTwin",img:"https://m.media-amazon.com/images/I/81BXkPZaEgL._AC_SL1500_.jpg"},
-    {name:"Blanket\nFull / Queen",img:"https://m.media-amazon.com/images/I/81BXkPZaEgL._AC_SL1500_.jpg"},
-    {name:"Blanket\nKing",img:"https://m.media-amazon.com/images/I/81BXkPZaEgL._AC_SL1500_.jpg"},
-    {name:"Duvet cover\nTwin",img:"https://m.media-amazon.com/images/I/81N3+3FKUCL._AC_SL1500_.jpg"},
-    {name:"Duvet cover\nFull / Queen",img:"https://m.media-amazon.com/images/I/81N3+3FKUCL._AC_SL1500_.jpg"},
-    {name:"Duvet cover\nKing",img:"https://m.media-amazon.com/images/I/81N3+3FKUCL._AC_SL1500_.jpg"},
-    {name:"Duvet insert\nTwin",img:"https://m.media-amazon.com/images/I/71Q4PKT5hCL._AC_SL1500_.jpg"},
-    {name:"Duvet insert\nFull / Queen",img:"https://m.media-amazon.com/images/I/71Q4PKT5hCL._AC_SL1500_.jpg"},
-    {name:"Duvet insert\nKing",img:"https://m.media-amazon.com/images/I/71Q4PKT5hCL._AC_SL1500_.jpg"}
-  ]},
-  {id:"towels",label:"Towels & Bath",icon:"🛁",items:[
-    {name:"Bath towels\n(set of 4)",img:"https://m.media-amazon.com/images/I/81VfIcxACjL._AC_SL1500_.jpg"},
-    {name:"Hand towels\n(set of 4)",img:"https://m.media-amazon.com/images/I/71sDvI3FYVL._AC_SL1500_.jpg"},
-    {name:"Washcloths\n(set of 4)",img:"https://m.media-amazon.com/images/I/61cYFoEIZ5L._AC_SL1500_.jpg"},
-    {name:"Pool / beach towels",img:"https://m.media-amazon.com/images/I/91zzKM4YgbL._AC_SL1500_.jpg"},
-    {name:"Bath mat",img:"https://m.media-amazon.com/images/I/71pSllCZQ0L._AC_SL1500_.jpg"}
-  ]}
+const cats = [
+  {
+    id: "kitchen",
+    label: "Kitchen Supplies",
+    icon: "🍽️",
+    items: [
+      { name: "Paper towels\n(2 backups under sink)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Paper_towel.jpg/320px-Paper_towel.jpg" },
+      { name: "Sponge\n(wrapped)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Sponge_for_cleaning.jpg/320px-Sponge_for_cleaning.jpg" },
+      { name: "6 waters\nin fridge", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Water_bottle.jpg/240px-Water_bottle.jpg" },
+      { name: "Dish towels\n(min 2)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Flickr_-_cyclonebill_-_Viskestykke.jpg/320px-Flickr_-_cyclonebill_-_Viskestykke.jpg" },
+      { name: "Dish soap\n(min half full)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Dawn_dish_soap.jpg/240px-Dawn_dish_soap.jpg" },
+      { name: "Dishwasher pods\n(min 10)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Cascade_ActionPacs.jpg/240px-Cascade_ActionPacs.jpg" },
+      { name: "Trash bags\n(min 10)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Hefty_trash_bags.jpg/240px-Hefty_trash_bags.jpg" },
+      { name: "Windex spray\n(min half full)", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Windex.jpg/240px-Windex.jpg" },
+      { name: "Coffee K-Cups", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG" },
+      { name: "Sugar", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Refined_Sugar_P1410031.jpg/320px-Refined_Sugar_P1410031.jpg" },
+      { name: "Creamer", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Coffee-creamer.jpg/320px-Coffee-creamer.jpg" },
+      { name: "Salt", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Salt_shaker_on_white_background.jpg/240px-Salt_shaker_on_white_background.jpg" },
+      { name: "Pepper", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Black_pepper_shaker.jpg/240px-Black_pepper_shaker.jpg" },
+      { name: "Olive oil", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Olive_oil_from_Oneglia.jpg/240px-Olive_oil_from_Oneglia.jpg" },
+      { name: "Cooking spray", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Pam_cooking_spray.jpg/240px-Pam_cooking_spray.jpg" },
+      { name: "Foil", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Reynolds_Wrap_Aluminum_Foil.jpg/240px-Reynolds_Wrap_Aluminum_Foil.jpg" },
+      { name: "Plastic wrap", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Plastic_wrap.jpg/240px-Plastic_wrap.jpg" },
+      { name: "Ziplock bags", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Ziploc_storage_bag.jpg/320px-Ziploc_storage_bag.jpg" }
+    ]
+  },
+  {
+    id: "linens",
+    label: "Linens & Bedding",
+    icon: "🛏️",
+    items: [
+      { name: "Mattress protector — Twin",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Mattress protector — Full",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Mattress protector — Queen",      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Mattress protector — King",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Mattress_protector.jpg/320px-Mattress_protector.jpg" },
+      { name: "Fitted sheet — Twin",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Fitted sheet — Full",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Fitted sheet — Queen",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Fitted sheet — King",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Bed_linen_P1170272.jpg/320px-Bed_linen_P1170272.jpg" },
+      { name: "Flat sheet — Twin",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Flat sheet — Full",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Flat sheet — Queen",              img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Flat sheet — King",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/White_sheet.jpg/320px-White_sheet.jpg" },
+      { name: "Pillowcases (set)",               img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Pillowcase.jpg/320px-Pillowcase.jpg" },
+      { name: "Blanket — Twin",                  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
+      { name: "Blanket — Full/Queen",            img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
+      { name: "Blanket — King",                  img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Fleece_blanket.jpg/320px-Fleece_blanket.jpg" },
+      { name: "Duvet cover — Twin",              img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
+      { name: "Duvet cover — Full/Queen",        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
+      { name: "Duvet cover — King",              img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Duvet_cover.jpg/320px-Duvet_cover.jpg" },
+      { name: "Duvet insert — Twin",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
+      { name: "Duvet insert — Full/Queen",       img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" },
+      { name: "Duvet insert — King",             img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Duvet.jpg/320px-Duvet.jpg" }
+    ]
+  },
+  {
+    id: "towels",
+    label: "Towels & Bath",
+    icon: "🛁",
+    items: [
+      { name: "Bath towels (set of 4)",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Towel.jpg/320px-Towel.jpg" },
+      { name: "Hand towels (set of 4)",   img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Folded_hand_towel.jpg/320px-Folded_hand_towel.jpg" },
+      { name: "Washcloths (set of 4)",    img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Washcloth.jpg/320px-Washcloth.jpg" },
+      { name: "Pool / beach towels",      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Beach_towel.jpg/320px-Beach_towel.jpg" },
+      { name: "Bath mat",                 img: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Bathroom_mat.jpg/320px-Bathroom_mat.jpg" }
+    ]
+  }
 ];
 
-const state={};
-cats.forEach(c=>c.items.forEach(it=>state[c.id+"::"+it.name]=false));
-const openSec={kitchen:true,linens:true,towels:true};
+// Build state using index to avoid key escaping issues
+const allItems = [];
+cats.forEach((cat, ci) => {
+  cat.items.forEach((item, ii) => {
+    allItems.push({ ci, ii, cat: cat.id, name: item.name, img: item.img });
+  });
+});
+const state = new Array(allItems.length).fill(false);
+const openSec = { kitchen: true, linens: true, towels: true };
 
-const FALLBACKS={"kitchen":"🍽️","linens":"🛏️","towels":"🛁"};
+function getIdx(ci, ii) {
+  return allItems.findIndex(x => x.ci === ci && x.ii === ii);
+}
 
-function render(){
-  const cont=document.getElementById("sections");
-  cont.innerHTML="";
-  cats.forEach(cat=>{
-    const miss=cat.items.filter(it=>!state[cat.id+"::"+it.name]).length;
-    const isOpen=openSec[cat.id];
-    const div=document.createElement("div");
-    div.className="section";
-    const badgeHtml=miss>0
-      ?`<span class="badge miss">${miss} missing</span>`
-      :`<span class="badge ok">All good ✓</span>`;
-    div.innerHTML=`
-      <div class="sec-hdr" onclick="toggleSec('${cat.id}')">
+function render() {
+  const cont = document.getElementById("sections");
+  cont.innerHTML = "";
+  cats.forEach((cat, ci) => {
+    const catItems = allItems.filter(x => x.ci === ci);
+    const miss = catItems.filter(x => !state[allItems.indexOf(x)]).length;
+    const isOpen = openSec[cat.id];
+    const badgeHtml = miss > 0
+      ? `<span class="badge miss">${miss} missing</span>`
+      : `<span class="badge ok">All good ✓</span>`;
+    const sec = document.createElement("div");
+    sec.className = "section";
+    let gridHtml = "";
+    if (isOpen) {
+      cat.items.forEach((item, ii) => {
+        const idx = getIdx(ci, ii);
+        const ok = state[idx];
+        const nameHtml = item.name.replace(/\n/g, "<br>");
+        gridHtml += `
+          <div class="card${ok ? " ok" : ""}" data-idx="${idx}">
+            <img class="card-img" src="${item.img}" alt="${item.name.replace(/\n/g," ")}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="card-fallback" style="display:none">${cat.icon}</div>
+            <div class="card-body">
+              <div class="card-check">${ok ? "✓" : ""}</div>
+              <div class="card-name">${nameHtml}</div>
+            </div>
+          </div>`;
+      });
+    }
+    sec.innerHTML = `
+      <div class="sec-hdr" data-sec="${cat.id}">
         <div class="sec-left">
           <span class="sec-icon">${cat.icon}</span>
           <span class="sec-name">${cat.label}</span>
           ${badgeHtml}
         </div>
-        <span class="chev${isOpen?" open":""}">⌄</span>
+        <span class="chev${isOpen ? " open" : ""}">⌄</span>
       </div>
-      ${isOpen?`<div class="grid">
-        ${cat.items.map(it=>{
-          const key=cat.id+"::"+it.name;
-          const ok=state[key];
-          const nameHtml=it.name.replace(/\n/g,"<br>");
-          return `<div class="card${ok?" ok":""}" onclick="toggle('${CSS.escape(key)}')">
-            <img class="card-img" src="${it.img}" alt="${it.name.replace(/\n/g," ")}"
-              onerror="this.outerHTML='<div class=\\'card-img fallback\\'>${FALLBACKS[cat.id]}</div>'">
-            <div class="card-body">
-              <span class="card-check">${ok?"✓":""}</span>
-              <span class="card-name">${nameHtml}</span>
-            </div>
-          </div>`;
-        }).join("")}
-      </div>`:""}`;
-    cont.appendChild(div);
+      ${isOpen ? `<div class="grid">${gridHtml}</div>` : ""}`;
+    cont.appendChild(sec);
   });
+
+  // Attach events via JS (no inline onclick)
+  document.querySelectorAll(".sec-hdr").forEach(el => {
+    el.addEventListener("click", () => {
+      openSec[el.dataset.sec] = !openSec[el.dataset.sec];
+      render();
+    });
+  });
+  document.querySelectorAll(".card").forEach(el => {
+    el.addEventListener("click", () => {
+      const idx = parseInt(el.dataset.idx);
+      state[idx] = !state[idx];
+      render();
+    });
+  });
+
   updateStats();
 }
 
-function toggleSec(id){openSec[id]=!openSec[id];render()}
-
-function toggle(key){
-  const realKey=key.replace(/\\(.)/g,'$1');
-  state[realKey]=!state[realKey];render();
+function updateStats() {
+  const total = state.length;
+  const ok = state.filter(Boolean).length;
+  document.getElementById("n-ok").textContent = ok;
+  document.getElementById("n-miss").textContent = total - ok;
+  document.getElementById("n-tot").textContent = total;
 }
 
-function updateStats(){
-  const total=Object.keys(state).length;
-  const ok=Object.values(state).filter(Boolean).length;
-  document.getElementById("n-ok").textContent=ok;
-  document.getElementById("n-miss").textContent=total-ok;
-  document.getElementById("n-tot").textContent=total;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
 }
 
-function showToast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),2500);
-}
-
-function genReport(){
-  const emp=document.getElementById("emp").value.trim();
-  const prop=document.getElementById("prop").value.trim();
-  if(!emp||!prop){showToast("⚠️ Please enter your name and property");return;}
-  const now=new Date();
-  const ds=now.toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});
-  const ts=now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
-  let lines=["📋 XTREME-JAX — INVENTORY REPORT","─────────────────────────────",`Employee: ${emp}`,`Property: ${prop}`,`Date: ${ds} ${ts}`,"─────────────────────────────"];
-  let totalMiss=0;
-  cats.forEach(cat=>{
-    const miss=cat.items.filter(it=>!state[cat.id+"::"+it.name]);
-    if(miss.length){
+function genReport() {
+  const emp = document.getElementById("emp").value.trim();
+  const prop = document.getElementById("prop").value.trim();
+  if (!emp || !prop) { showToast("⚠️ Enter your name and property first"); return; }
+  const now = new Date();
+  const ds = now.toLocaleDateString("en-US", { weekday: "short", year: "numeric", month: "short", day: "numeric" });
+  const ts = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+  let lines = [
+    "📋 XTREME-JAX — INVENTORY REPORT",
+    "─────────────────────────────",
+    `Employee: ${emp}`,
+    `Property: ${prop}`,
+    `Date: ${ds} ${ts}`,
+    "─────────────────────────────"
+  ];
+  let totalMiss = 0;
+  cats.forEach((cat, ci) => {
+    const miss = cat.items.filter((_, ii) => !state[getIdx(ci, ii)]);
+    if (miss.length) {
       lines.push(`\n🔴 ${cat.label.toUpperCase()} — NEEDS RESTOCK:`);
-      miss.forEach(m=>lines.push(`  • ${m.name.replace(/\n/g," ")}`));
-      totalMiss+=miss.length;
-    }else{
+      miss.forEach(m => lines.push(`  • ${m.name.replace(/\n/g, " ")}`));
+      totalMiss += miss.length;
+    } else {
       lines.push(`\n✅ ${cat.label.toUpperCase()}: All good`);
     }
   });
-  lines.push("\n─────────────────────────────",`Total missing: ${totalMiss} item${totalMiss!==1?"s":""}`);
-  const text=lines.join("\n");
-  const rout=document.getElementById("rout");
-  rout.textContent=text;rout.style.display="block";
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(text).then(()=>showToast("✓ Report copied to clipboard!"));
+  lines.push("\n─────────────────────────────", `Total missing: ${totalMiss} item${totalMiss !== 1 ? "s" : ""}`);
+  const text = lines.join("\n");
+  const rout = document.getElementById("rout");
+  rout.textContent = text;
+  rout.style.display = "block";
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast("✓ Report copied to clipboard!"));
   }
-  rout.scrollIntoView({behavior:"smooth",block:"nearest"});
+  rout.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 render();
