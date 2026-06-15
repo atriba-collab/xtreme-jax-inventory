@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Xtreme-Jax Inventory</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;min-height:100vh}
+.header{background:#0a1628;padding:1rem 1.25rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.logo{font-size:11px;font-weight:600;color:#c9a84c;letter-spacing:.08em}
+.title{font-size:18px;font-weight:600;color:#fff;margin-top:1px}
+.sub{font-size:12px;color:rgba(255,255,255,.5);margin-top:1px}
+.fields{background:#fff;padding:.85rem 1.25rem;border-bottom:1px solid #e5e7eb;display:flex;flex-direction:column;gap:10px}
+.field-label{font-size:11px;color:#6b7280;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.field-label span{color:#ef4444}
+input{width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:10px;font-size:15px;color:#111;background:#f9fafb}
+input:focus{outline:none;border-color:#0a1628;background:#fff}
+.section{margin-top:10px}
+.sec-hdr{background:#fff;padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid #f0f0f0}
+.sec-left{display:flex;align-items:center;gap:10px}
+.sec-icon{font-size:20px}
+.sec-name{font-size:15px;font-weight:600;color:#111}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+.badge.miss{background:#fef3c7;color:#92400e}
+.badge.ok{background:#d1fae5;color:#065f46}
+.chev{font-size:20px;color:#9ca3af;transition:transform .25s}
+.chev.open{transform:rotate(180deg)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 1.25rem 12px;background:#f0f2f5}
+.card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card.ok{border-color:#0a1628;box-shadow:0 2px 8px rgba(10,22,40,.15)}
+.card-img{width:100%;height:110px;object-fit:cover;display:block;background:#f3f4f6}
+.card-img.fallback{display:flex;align-items:center;justify-content:center;font-size:48px}
+.card-body{padding:8px 10px 10px}
+.card-check{width:18px;height:18px;border-radius:4px;border:2px solid #d1d5db;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-right:5px;flex-shrink:0;font-size:11px;font-weight:700;transition:all .15s}
+.card.ok .card-check{background:#0a1628;border-color:#0a1628;color:#c9a84c}
+.card-name{font-size:12px;color:#374151;vertical-align:middle;line-height:1.35;font-weight:500}
+.footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem;border-top:1px solid #e5e7eb}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.stat{background:#f9fafb;border-radius:12px;padding:.75rem;text-align:center;border:1px solid #e5e7eb}
+.stat-n{font-size:24px;font-weight:700;color:#111}
+.stat-n.warn{color:#d97706}
+.stat-n.good{color:#059669}
+.stat-l{font-size:11px;color:#6b7280;margin-top:2px;font-weight:500}
+.btn{width:100%;padding:14px;background:#0a1628;color:#c9a84c;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .15s}
+.btn:active{opacity:.85}
+.rout{margin-top:.85rem;background:#f9fafb;border-radius:12px;padding:1rem;font-size:12.5px;white-space:pre-wrap;display:none;border:1px solid #e5e7eb;color:#374151;line-height:1.6}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#0a1628;color:#c9a84c;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">XTREME-JAX CLEANING SUPPORT INC.</div>
+  <div class="title">Inventory Checklist</div>
+  <div class="sub">Tap each item that is available</div>
+</div>
+
+<div class="fields">
+  <div>
+    <div class="field-label">Employee name <span>*</span></div>
+    <input type="text" id="emp" placeholder="Your full name...">
+  </div>
+  <div>
+    <div class="field-label">Property / Service address <span>*</span></div>
+    <input type="text" id="prop" placeholder="e.g. 1234 Beach Blvd, Unit 2">
+  </div>
+</div>
+
+<div id="sections"></div>
+
+<div class="footer">
+  <div class="stats">
+    <div class="stat"><div class="stat-n good" id="n-ok">0</div><div class="stat-l">OK</div></div>
+    <div class="stat"><div class="stat-n warn" id="n-miss">0</div><div class="stat-l">Missing</div></div>
+    <div class="stat"><div class="stat-n" id="n-tot">0</div><div class="stat-l">Total</div></div>
+  </div>
+  <button class="btn" onclick="genReport()">📋 Generate & Copy Report</button>
+  <div class="rout" id="rout"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const cats=[
+  {id:"kitchen",label:"Kitchen Supplies",icon:"🍽️",items:[
+    {name:"Paper towels\n(2 backups under sink)",img:"https://m.media-amazon.com/images/I/81M7G1W06fL._AC_SL1500_.jpg"},
+    {name:"Sponge\n(wrapped)",img:"https://m.media-amazon.com/images/I/71UGHiXM+6L._AC_SL1500_.jpg"},
+    {name:"6 waters\nin fridge",img:"https://m.media-amazon.com/images/I/61qLuCVNh2L._AC_SL1500_.jpg"},
+    {name:"Dish towels\n(min 2)",img:"https://m.media-amazon.com/images/I/81mJ+JfFBwL._AC_SL1500_.jpg"},
+    {name:"Dish soap\n(min half full)",img:"https://m.media-amazon.com/images/I/61MVvBG0ARL._AC_SL1500_.jpg"},
+    {name:"Dishwasher pods\n(min 10)",img:"https://m.media-amazon.com/images/I/71U2xJLzaEL._AC_SL1500_.jpg"},
+    {name:"Trash bags\n(min 10)",img:"https://m.media-amazon.com/images/I/81+ZFIjkGvL._AC_SL1500_.jpg"},
+    {name:"Windex spray\n(min half full)",img:"https://m.media-amazon.com/images/I/71VvuS0VQBL._AC_SL1500_.jpg"},
+    {name:"Coffee K-Cups",img:"https://m.media-amazon.com/images/I/81CsULqNGnL._AC_SL1500_.jpg"},
+    {name:"Sugar",img:"https://m.media-amazon.com/images/I/81yS4QXBNPL._AC_SL1500_.jpg"},
+    {name:"Creamer",img:"https://m.media-amazon.com/images/I/71gPQpDJrNL._AC_SL1500_.jpg"},
+    {name:"Salt",img:"https://m.media-amazon.com/images/I/81F-WfQrX5L._AC_SL1500_.jpg"},
+    {name:"Pepper",img:"https://m.media-amazon.com/images/I/81zQ5Vq7g2L._AC_SL1500_.jpg"},
+    {name:"Olive oil",img:"https://m.media-amazon.com/images/I/712iBLHf9KL._AC_SL1500_.jpg"},
+    {name:"Cooking spray",img:"https://m.media-amazon.com/images/I/71qHNFD+HNL._AC_SL1500_.jpg"},
+    {name:"Foil",img:"https://m.media-amazon.com/images/I/81D9lRQz5WL._AC_SL1500_.jpg"},
+    {name:"Plastic wrap",img:"https://m.media-amazon.com/images/I/71FVHjCGcqL._AC_SL1500_.jpg"},
+    {name:"Ziplock bags",img:"https://m.media-amazon.com/images/I/71JxM3KKIHL._AC_SL1500_.jpg"}
+  ]},
+  {id:"linens",label:"Linens & Bedding",icon:"🛏️",items:[
+    {name:"Mattress protector\nTwin",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
+    {name:"Mattress protector\nFull",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
+    {name:"Mattress protector\nQueen",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
+    {name:"Mattress protector\nKing",img:"https://m.media-amazon.com/images/I/71dJAm6VUNL._AC_SL1500_.jpg"},
+    {name:"Fitted sheet\nTwin",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
+    {name:"Fitted sheet\nFull",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
+    {name:"Fitted sheet\nQueen",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
+    {name:"Fitted sheet\nKing",img:"https://m.media-amazon.com/images/I/81qPSsmRILL._AC_SL1500_.jpg"},
+    {name:"Flat sheet\nTwin",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
+    {name:"Flat sheet\nFull",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
+    {name:"Flat sheet\nQueen",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
+    {name:"Flat sheet\nKing",img:"https://m.media-amazon.com/images/I/71W3+iNL7cL._AC_SL1500_.jpg"},
+    {name:"Pillowcases\n(set)",img:"https://m.media-amazon.com/images/I/81nFKbzO1LL._AC_SL1500_.jpg"},
+    {name:"Blanket\nTwin",img:"https://m.media-amazon.com/images/I/81BXkPZaEgL._AC_SL1500_.jpg"},
+    {name:"Blanket\nFull / Queen",img:"https://m.media-amazon.com/images/I/81BXkPZaEgL._AC_SL1500_.jpg"},
+    {name:"Blanket\nKing",img:"https://m.media-amazon.com/images/I/81BXkPZaEgL._AC_SL1500_.jpg"},
+    {name:"Duvet cover\nTwin",img:"https://m.media-amazon.com/images/I/81N3+3FKUCL._AC_SL1500_.jpg"},
+    {name:"Duvet cover\nFull / Queen",img:"https://m.media-amazon.com/images/I/81N3+3FKUCL._AC_SL1500_.jpg"},
+    {name:"Duvet cover\nKing",img:"https://m.media-amazon.com/images/I/81N3+3FKUCL._AC_SL1500_.jpg"},
+    {name:"Duvet insert\nTwin",img:"https://m.media-amazon.com/images/I/71Q4PKT5hCL._AC_SL1500_.jpg"},
+    {name:"Duvet insert\nFull / Queen",img:"https://m.media-amazon.com/images/I/71Q4PKT5hCL._AC_SL1500_.jpg"},
+    {name:"Duvet insert\nKing",img:"https://m.media-amazon.com/images/I/71Q4PKT5hCL._AC_SL1500_.jpg"}
+  ]},
+  {id:"towels",label:"Towels & Bath",icon:"🛁",items:[
+    {name:"Bath towels\n(set of 4)",img:"https://m.media-amazon.com/images/I/81VfIcxACjL._AC_SL1500_.jpg"},
+    {name:"Hand towels\n(set of 4)",img:"https://m.media-amazon.com/images/I/71sDvI3FYVL._AC_SL1500_.jpg"},
+    {name:"Washcloths\n(set of 4)",img:"https://m.media-amazon.com/images/I/61cYFoEIZ5L._AC_SL1500_.jpg"},
+    {name:"Pool / beach towels",img:"https://m.media-amazon.com/images/I/91zzKM4YgbL._AC_SL1500_.jpg"},
+    {name:"Bath mat",img:"https://m.media-amazon.com/images/I/71pSllCZQ0L._AC_SL1500_.jpg"}
+  ]}
+];
+
+const state={};
+cats.forEach(c=>c.items.forEach(it=>state[c.id+"::"+it.name]=false));
+const openSec={kitchen:true,linens:true,towels:true};
+
+const FALLBACKS={"kitchen":"🍽️","linens":"🛏️","towels":"🛁"};
+
+function render(){
+  const cont=document.getElementById("sections");
+  cont.innerHTML="";
+  cats.forEach(cat=>{
+    const miss=cat.items.filter(it=>!state[cat.id+"::"+it.name]).length;
+    const isOpen=openSec[cat.id];
+    const div=document.createElement("div");
+    div.className="section";
+    const badgeHtml=miss>0
+      ?`<span class="badge miss">${miss} missing</span>`
+      :`<span class="badge ok">All good ✓</span>`;
+    div.innerHTML=`
+      <div class="sec-hdr" onclick="toggleSec('${cat.id}')">
+        <div class="sec-left">
+          <span class="sec-icon">${cat.icon}</span>
+          <span class="sec-name">${cat.label}</span>
+          ${badgeHtml}
+        </div>
+        <span class="chev${isOpen?" open":""}">⌄</span>
+      </div>
+      ${isOpen?`<div class="grid">
+        ${cat.items.map(it=>{
+          const key=cat.id+"::"+it.name;
+          const ok=state[key];
+          const nameHtml=it.name.replace(/\n/g,"<br>");
+          return `<div class="card${ok?" ok":""}" onclick="toggle('${CSS.escape(key)}')">
+            <img class="card-img" src="${it.img}" alt="${it.name.replace(/\n/g," ")}"
+              onerror="this.outerHTML='<div class=\\'card-img fallback\\'>${FALLBACKS[cat.id]}</div>'">
+            <div class="card-body">
+              <span class="card-check">${ok?"✓":""}</span>
+              <span class="card-name">${nameHtml}</span>
+            </div>
+          </div>`;
+        }).join("")}
+      </div>`:""}`;
+    cont.appendChild(div);
+  });
+  updateStats();
+}
+
+function toggleSec(id){openSec[id]=!openSec[id];render()}
+
+function toggle(key){
+  const realKey=key.replace(/\\(.)/g,'$1');
+  state[realKey]=!state[realKey];render();
+}
+
+function updateStats(){
+  const total=Object.keys(state).length;
+  const ok=Object.values(state).filter(Boolean).length;
+  document.getElementById("n-ok").textContent=ok;
+  document.getElementById("n-miss").textContent=total-ok;
+  document.getElementById("n-tot").textContent=total;
+}
+
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2500);
+}
+
+function genReport(){
+  const emp=document.getElementById("emp").value.trim();
+  const prop=document.getElementById("prop").value.trim();
+  if(!emp||!prop){showToast("⚠️ Please enter your name and property");return;}
+  const now=new Date();
+  const ds=now.toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});
+  const ts=now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  let lines=["📋 XTREME-JAX — INVENTORY REPORT","─────────────────────────────",`Employee: ${emp}`,`Property: ${prop}`,`Date: ${ds} ${ts}`,"─────────────────────────────"];
+  let totalMiss=0;
+  cats.forEach(cat=>{
+    const miss=cat.items.filter(it=>!state[cat.id+"::"+it.name]);
+    if(miss.length){
+      lines.push(`\n🔴 ${cat.label.toUpperCase()} — NEEDS RESTOCK:`);
+      miss.forEach(m=>lines.push(`  • ${m.name.replace(/\n/g," ")}`));
+      totalMiss+=miss.length;
+    }else{
+      lines.push(`\n✅ ${cat.label.toUpperCase()}: All good`);
+    }
+  });
+  lines.push("\n─────────────────────────────",`Total missing: ${totalMiss} item${totalMiss!==1?"s":""}`);
+  const text=lines.join("\n");
+  const rout=document.getElementById("rout");
+  rout.textContent=text;rout.style.display="block";
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>showToast("✓ Report copied to clipboard!"));
+  }
+  rout.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+render();
+</script>
+</body>
+</html>
