@@ -62,7 +62,6 @@ textarea{resize:none;line-height:1.5}
 .custom-item{display:flex;align-items:center;gap:10px;background:#fff8ec;border-radius:10px;padding:10px 12px;border:1px solid #f5c842}
 .custom-item-name{flex:1;font-size:14px;font-weight:600;color:#7a5800}
 .btn-remove{width:28px;height:28px;border-radius:7px;border:none;background:#fee2e2;color:#b91c1c;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-/* Footer */
 .footer{background:#fff;margin-top:10px;padding:1rem 1.25rem 2rem}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
 .stat{background:#f9fafb;border-radius:12px;padding:.75rem;text-align:center;border:1px solid #e5e7eb}
@@ -117,7 +116,6 @@ textarea{resize:none;line-height:1.5}
 
 <div id="sections"></div>
 
-<!-- EXTRA REQUESTS -->
 <div class="extras-section">
   <div class="extras-hdr" onclick="toggleExtras()">
     <div class="sec-left">
@@ -156,7 +154,7 @@ textarea{resize:none;line-height:1.5}
         <span>Andrés<span class="wa-label">904-582-4788</span></span>
       </button>
       <button class="btn btn-wa" onclick="sendWhatsApp('19045251199')">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <span>Andrea<span class="wa-label">904-525-1199</span></span>
       </button>
     </div>
@@ -168,10 +166,8 @@ textarea{resize:none;line-height:1.5}
 
 <script>
 // ══════════════════════════════════════════════
-// SECTION DEFINITIONS
+// 1. KITCHEN SUPPLIES — checkbox inventory
 // ══════════════════════════════════════════════
-
-// 1. KITCHEN & HOUSE ITEMS (checkbox) — what stays in the house
 const kitchenItems = [
   "Paper towels (2 backups under sink)",
   "Sponge (wrapped)",
@@ -202,7 +198,9 @@ const kitchenItems = [
   "Air freshener"
 ];
 
-// 2. SERVICE SUPPLIES (checkbox) — what's needed to do the job
+// ══════════════════════════════════════════════
+// 2. SERVICE SUPPLIES — qty needed to stock
+// ══════════════════════════════════════════════
 const supplyItems = [
   "Clorox",
   "Mop head",
@@ -213,41 +211,34 @@ const supplyItems = [
   "Suavitel (fabric softener)",
   "Wrinkle releaser spray"
 ];
+const supplyQty = {};
+supplyItems.forEach(n => supplyQty[n] = 0);
 
-// 3. LINENS & BEDDING (qty) — sets needed by size
+// ══════════════════════════════════════════════
+// 3. LINENS & BEDDING — qty by size
+// ══════════════════════════════════════════════
 const linenGroups = [
-  { name:"Sheet Set",                  sizes:["King","Queen","Full","Twin"] },
-  { name:"Duvet Cover",                sizes:["King","Queen","Full","Twin"] },
-  { name:"Duvet Insert",               sizes:["King","Queen","Full","Twin"] },
-  { name:"Mattress Protector (Elastic)",sizes:["King","Queen","Full","Twin"] },
-  { name:"Mattress Protector (Zipper)", sizes:["King","Queen","Full","Twin"] },
-  { name:"Pillowcase Protector",        sizes:["Standard","King"] },
-  { name:"Bath towels",                 sizes:["Set of 4"] },
-  { name:"Hand towels",                 sizes:["Set of 4"] },
-  { name:"Washcloths",                  sizes:["Set of 4"] },
-  { name:"Bath mat",                    sizes:["Unit"] }
+  { name:"Sheet Set",                    sizes:["King","Queen","Full","Twin"] },
+  { name:"Duvet Cover",                  sizes:["King","Queen","Full","Twin"] },
+  { name:"Duvet Insert",                 sizes:["King","Queen","Full","Twin"] },
+  { name:"Mattress Protector (Elastic)", sizes:["King","Queen","Full","Twin"] },
+  { name:"Mattress Protector (Zipper)",  sizes:["King","Queen","Full","Twin"] },
+  { name:"Pillowcase Protector",         sizes:["Standard","King"] },
+  { name:"Bath towels",                  sizes:["Set of 4"] },
+  { name:"Hand towels",                  sizes:["Set of 4"] },
+  { name:"Washcloths",                   sizes:["Set of 4"] },
+  { name:"Bath mat",                     sizes:["Unit"] }
 ];
-
 const linenQty = {};
 linenGroups.forEach(g => g.sizes.forEach(s => linenQty[g.name+"||"+s] = 0));
 
-// Flat checkbox state
-const checkSections = [
-  { id:"kitchen",  label:"Kitchen & House Items", icon:"🏠", items: kitchenItems },
-  { id:"supplies", label:"Service Supplies",       icon:"🧹", items: supplyItems  }
-];
-const allCheck = [];
-checkSections.forEach((sec,si) => sec.items.forEach((name,ii) => allCheck.push({si,ii,name,state:false})));
+// Checkbox state for kitchen
+const allCheck = kitchenItems.map(name => ({name, state:false}));
 
-const openSec = { kitchen:true, supplies:true, linens:true, extras:true };
+const openSec = {kitchen:true, supplies:true, linens:true, extras:true};
 const customItems = [];
 
-// ══════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════
-function getCheckIdx(si,ii){ return allCheck.findIndex(x=>x.si===si&&x.ii===ii); }
-
-function safeId(key){ return key.replace(/[^a-zA-Z0-9]/g,"_"); }
+function safeId(k){ return k.replace(/[^a-zA-Z0-9]/g,"_"); }
 
 function onPropChange(){
   const val = document.getElementById("prop").value;
@@ -258,85 +249,114 @@ function onPropChange(){
   info.style.display = "block";
 }
 
-// ══════════════════════════════════════════════
-// RENDER
-// ══════════════════════════════════════════════
+// ── RENDER ──────────────────────────────────
 function render(){
   const cont = document.getElementById("sections");
   cont.innerHTML = "";
-
-  // Checkbox sections
-  checkSections.forEach((sec,si) => {
-    const miss = allCheck.filter(x=>x.si===si && !x.state).length;
-    const isOpen = openSec[sec.id];
-    const badgeHtml = miss>0
-      ? `<span class="badge miss">${miss} missing</span>`
-      : `<span class="badge ok">All good ✓</span>`;
-    let gridHtml = "";
-    if(isOpen){
-      sec.items.forEach((name,ii) => {
-        const idx = getCheckIdx(si,ii);
-        const ok = allCheck[idx].state;
-        gridHtml += `<div class="card${ok?" ok":""}" data-idx="${idx}">
-          <div class="card-check">${ok?"✓":""}</div>
-          <div class="card-name">${name}</div>
-        </div>`;
-      });
-    }
-    const div = document.createElement("div");
-    div.className = "section";
-    div.innerHTML = `
-      <div class="sec-hdr" data-sec="${sec.id}">
-        <div class="sec-left">
-          <span class="sec-icon">${sec.icon}</span>
-          <span class="sec-name">${sec.label}</span>
-          ${badgeHtml}
-        </div>
-        <span class="chev${isOpen?" open":""}">⌄</span>
-      </div>
-      ${isOpen ? `<div class="grid">${gridHtml}</div>` : ""}`;
-    cont.appendChild(div);
-  });
-
-  // Linens section
+  cont.appendChild(buildKitchenSection());
+  cont.appendChild(buildSuppliesSection());
   cont.appendChild(buildLinensSection());
 
-  // Events
-  document.querySelectorAll(".sec-hdr[data-sec]").forEach(el => {
-    el.addEventListener("click", () => { openSec[el.dataset.sec]=!openSec[el.dataset.sec]; render(); });
-  });
+  // Checkbox events
   document.querySelectorAll(".card[data-idx]").forEach(el => {
     el.addEventListener("click", () => {
-      const idx = parseInt(el.dataset.idx);
-      allCheck[idx].state = !allCheck[idx].state;
+      allCheck[parseInt(el.dataset.idx)].state = !allCheck[parseInt(el.dataset.idx)].state;
       render();
     });
   });
-  document.querySelectorAll(".qty-btn[data-key]").forEach(el => {
+  // Section toggle
+  document.querySelectorAll(".sec-hdr[data-sec]").forEach(el => {
+    el.addEventListener("click", () => { openSec[el.dataset.sec]=!openSec[el.dataset.sec]; render(); });
+  });
+  // Supply qty
+  document.querySelectorAll(".sqty-btn[data-name]").forEach(el => {
     el.addEventListener("click", () => {
-      const key = el.dataset.key, delta = parseInt(el.dataset.delta);
-      linenQty[key] = Math.max(0, (linenQty[key]||0) + delta);
-      const el2 = document.getElementById("qn-"+safeId(key));
-      if(el2){ el2.textContent = linenQty[key]; el2.className = "qty-num"+(linenQty[key]>0?" active":""); }
+      const n=el.dataset.name, d=parseInt(el.dataset.delta);
+      supplyQty[n]=Math.max(0,(supplyQty[n]||0)+d);
+      const el2=document.getElementById("sqn-"+safeId(n));
+      if(el2){ el2.textContent=supplyQty[n]; el2.className="qty-num"+(supplyQty[n]>0?" active":""); }
     });
   });
-
+  // Linen qty
+  document.querySelectorAll(".qty-btn[data-key]").forEach(el => {
+    el.addEventListener("click", () => {
+      const k=el.dataset.key, d=parseInt(el.dataset.delta);
+      linenQty[k]=Math.max(0,(linenQty[k]||0)+d);
+      const el2=document.getElementById("qn-"+safeId(k));
+      if(el2){ el2.textContent=linenQty[k]; el2.className="qty-num"+(linenQty[k]>0?" active":""); }
+    });
+  });
   updateStats();
 }
 
+function buildKitchenSection(){
+  const isOpen = openSec.kitchen;
+  const miss = allCheck.filter(x=>!x.state).length;
+  const badgeHtml = miss>0
+    ? `<span class="badge miss">${miss} missing</span>`
+    : `<span class="badge ok">All good ✓</span>`;
+  let gridHtml = "";
+  if(isOpen){
+    allCheck.forEach((item,idx)=>{
+      gridHtml += `<div class="card${item.state?" ok":""}" data-idx="${idx}">
+        <div class="card-check">${item.state?"✓":""}</div>
+        <div class="card-name">${item.name}</div>
+      </div>`;
+    });
+  }
+  const div=document.createElement("div"); div.className="section";
+  div.innerHTML=`
+    <div class="sec-hdr" data-sec="kitchen">
+      <div class="sec-left"><span class="sec-icon">🏠</span><span class="sec-name">Kitchen Supplies</span>${badgeHtml}</div>
+      <span class="chev${isOpen?" open":""}">⌄</span>
+    </div>
+    ${isOpen?`<div class="grid">${gridHtml}</div>`:""}`;
+  return div;
+}
+
+function buildSuppliesSection(){
+  const isOpen = openSec.supplies;
+  const totalQty = Object.values(supplyQty).reduce((a,b)=>a+b,0);
+  const badgeHtml = totalQty>0
+    ? `<span class="badge qty">${totalQty} units needed</span>`
+    : `<span class="badge ok">Set quantities</span>`;
+  let rowsHtml = "";
+  if(isOpen){
+    supplyItems.forEach(name=>{
+      const qty=supplyQty[name]||0;
+      rowsHtml+=`
+        <div class="qty-row">
+          <div class="qty-row-name"><div class="qty-row-title">${name}</div></div>
+          <div class="qty-ctrl">
+            <button class="sqty-btn qty-btn" data-name="${name}" data-delta="-1">−</button>
+            <span class="qty-num${qty>0?" active":""}" id="sqn-${safeId(name)}">${qty}</span>
+            <button class="sqty-btn qty-btn" data-name="${name}" data-delta="1">+</button>
+          </div>
+        </div>`;
+    });
+  }
+  const div=document.createElement("div"); div.className="section";
+  div.innerHTML=`
+    <div class="sec-hdr" data-sec="supplies">
+      <div class="sec-left"><span class="sec-icon">🧹</span><span class="sec-name">Service Supplies</span>${badgeHtml}</div>
+      <span class="chev${isOpen?" open":""}">⌄</span>
+    </div>
+    ${isOpen?`<div class="qty-grid">${rowsHtml}</div>`:""}`;
+  return div;
+}
+
 function buildLinensSection(){
-  const isOpen = openSec["linens"];
+  const isOpen = openSec.linens;
   const totalQty = Object.values(linenQty).reduce((a,b)=>a+b,0);
   const badgeHtml = totalQty>0
     ? `<span class="badge qty">${totalQty} sets needed</span>`
-    : `<span class="badge ok">Set quantities needed</span>`;
+    : `<span class="badge ok">Set quantities</span>`;
   let rowsHtml = "";
   if(isOpen){
-    linenGroups.forEach(g => {
-      g.sizes.forEach(s => {
-        const key = g.name+"||"+s;
-        const qty = linenQty[key]||0;
-        rowsHtml += `
+    linenGroups.forEach(g=>{
+      g.sizes.forEach(s=>{
+        const key=g.name+"||"+s, qty=linenQty[key]||0;
+        rowsHtml+=`
           <div class="qty-row">
             <div class="qty-row-name">
               <div class="qty-row-title">${g.name}</div>
@@ -351,46 +371,37 @@ function buildLinensSection(){
       });
     });
   }
-  const div = document.createElement("div");
-  div.className = "section";
-  div.innerHTML = `
+  const div=document.createElement("div"); div.className="section";
+  div.innerHTML=`
     <div class="sec-hdr" data-sec="linens">
-      <div class="sec-left">
-        <span class="sec-icon">🛏️</span>
-        <span class="sec-name">Linens & Bedding</span>
-        ${badgeHtml}
-      </div>
+      <div class="sec-left"><span class="sec-icon">🛏️</span><span class="sec-name">Linens & Bedding</span>${badgeHtml}</div>
       <span class="chev${isOpen?" open":""}">⌄</span>
     </div>
-    ${isOpen ? `<div class="qty-grid">${rowsHtml}</div>` : ""}`;
+    ${isOpen?`<div class="qty-grid">${rowsHtml}</div>`:""}`;
   return div;
 }
 
 function toggleExtras(){
-  openSec.extras = !openSec.extras;
-  document.getElementById("extras-body").style.display = openSec.extras?"flex":"none";
-  document.getElementById("extras-chev").classList.toggle("open", openSec.extras);
+  openSec.extras=!openSec.extras;
+  document.getElementById("extras-body").style.display=openSec.extras?"flex":"none";
+  document.getElementById("extras-chev").classList.toggle("open",openSec.extras);
 }
 
 function addCustomItem(){
-  const inp = document.getElementById("custom-input");
-  const val = inp.value.trim();
-  if(!val) return;
-  customItems.push({name:val, qty:1});
-  inp.value = "";
+  const inp=document.getElementById("custom-input");
+  const val=inp.value.trim(); if(!val)return;
+  customItems.push({name:val,qty:1}); inp.value="";
   renderCustom();
 }
-document.getElementById("custom-input").addEventListener("keydown", e => {
-  if(e.key==="Enter"){ e.preventDefault(); addCustomItem(); }
+document.getElementById("custom-input").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){e.preventDefault();addCustomItem();}
 });
-
 function renderCustom(){
-  const list = document.getElementById("custom-list");
-  list.innerHTML = "";
-  customItems.forEach((item,idx) => {
-    const row = document.createElement("div");
-    row.className = "custom-item";
-    row.innerHTML = `
+  const list=document.getElementById("custom-list");
+  list.innerHTML="";
+  customItems.forEach((item,idx)=>{
+    const row=document.createElement("div"); row.className="custom-item";
+    row.innerHTML=`
       <div class="custom-item-name">${item.name}</div>
       <div class="qty-ctrl">
         <button class="qty-btn" onclick="chCQ(${idx},-1)">−</button>
@@ -402,39 +413,38 @@ function renderCustom(){
   });
   updateExtrasBadge();
 }
-function chCQ(idx,d){ customItems[idx].qty=Math.max(1,customItems[idx].qty+d); renderCustom(); }
-function removeCustom(idx){ customItems.splice(idx,1); renderCustom(); }
+function chCQ(idx,d){customItems[idx].qty=Math.max(1,customItems[idx].qty+d);renderCustom();}
+function removeCustom(idx){customItems.splice(idx,1);renderCustom();}
 function updateExtrasBadge(){
-  const badge = document.getElementById("extras-badge");
-  const n = customItems.length;
-  if(n>0){ badge.textContent=`${n} item${n>1?"s":""} added`; badge.style.background="#fef3c7"; badge.style.color="#92400e"; }
-  else { badge.textContent="Optional"; badge.style.background="#e0f2fe"; badge.style.color="#0369a1"; }
+  const badge=document.getElementById("extras-badge"), n=customItems.length;
+  if(n>0){badge.textContent=`${n} item${n>1?"s":""} added`;badge.style.background="#fef3c7";badge.style.color="#92400e";}
+  else{badge.textContent="Optional";badge.style.background="#e0f2fe";badge.style.color="#0369a1";}
 }
 
 function updateStats(){
-  const ok = allCheck.filter(x=>x.state).length;
-  document.getElementById("n-ok").textContent = ok;
-  document.getElementById("n-miss").textContent = allCheck.length - ok;
-  document.getElementById("n-tot").textContent = allCheck.length;
+  const ok=allCheck.filter(x=>x.state).length;
+  document.getElementById("n-ok").textContent=ok;
+  document.getElementById("n-miss").textContent=allCheck.length-ok;
+  document.getElementById("n-tot").textContent=allCheck.length;
 }
 
 function showToast(msg){
-  const t = document.getElementById("toast");
-  t.textContent=msg; t.classList.add("show");
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
   setTimeout(()=>t.classList.remove("show"),2500);
 }
 
-// ── BUILD REPORT (only what's needed / missing) ─────────────────
+// ── REPORT — only what's needed/missing ─────
 function buildReport(){
-  const emp = document.getElementById("emp").value.trim();
-  const propVal = document.getElementById("prop").value;
-  if(!emp||!propVal){ showToast("⚠️ Enter your name and select a property"); return null; }
-  const [propName,propAddr] = propVal.split("|");
-  const now = new Date();
-  const ds = now.toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});
-  const ts = now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
+  const emp=document.getElementById("emp").value.trim();
+  const propVal=document.getElementById("prop").value;
+  if(!emp||!propVal){showToast("⚠️ Enter your name and select a property");return null;}
+  const [propName,propAddr]=propVal.split("|");
+  const now=new Date();
+  const ds=now.toLocaleDateString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric"});
+  const ts=now.toLocaleTimeString("en-US",{hour:"2-digit",minute:"2-digit"});
 
-  let lines = [
+  let lines=[
     "📋 XTREME-JAX — NEEDS REPORT",
     "─────────────────────────────",
     `Employee : ${emp}`,
@@ -443,64 +453,64 @@ function buildReport(){
     `Date     : ${ds} ${ts}`,
     "─────────────────────────────"
   ];
+  let hasContent=false;
 
-  let hasContent = false;
+  // Kitchen — only missing
+  const kitMiss=allCheck.filter(x=>!x.state);
+  if(kitMiss.length){
+    lines.push("\n🏠 KITCHEN SUPPLIES — NEEDS RESTOCK:");
+    kitMiss.forEach(x=>lines.push(`  • ${x.name}`));
+    hasContent=true;
+  }
 
-  // Checkbox sections — only missing
-  checkSections.forEach((sec,si) => {
-    const miss = allCheck.filter(x=>x.si===si && !x.state);
-    if(miss.length){
-      lines.push(`\n🔴 ${sec.label.toUpperCase()} — NEEDS RESTOCK:`);
-      miss.forEach(x => lines.push(`  • ${x.name}`));
-      hasContent = true;
-    }
-  });
+  // Service supplies — only qty > 0
+  const supNeeded=supplyItems.filter(n=>supplyQty[n]>0);
+  if(supNeeded.length){
+    lines.push("\n🧹 SERVICE SUPPLIES NEEDED:");
+    supNeeded.forEach(n=>lines.push(`  • ${n}: ${supplyQty[n]}`));
+    hasContent=true;
+  }
 
   // Linens — only qty > 0
-  const linenNeeded = [];
-  linenGroups.forEach(g => {
-    g.sizes.forEach(s => {
-      const qty = linenQty[g.name+"||"+s]||0;
-      if(qty>0) linenNeeded.push(`  • ${g.name} — ${s}: ${qty}`);
-    });
-  });
+  const linenNeeded=[];
+  linenGroups.forEach(g=>g.sizes.forEach(s=>{
+    const qty=linenQty[g.name+"||"+s]||0;
+    if(qty>0) linenNeeded.push(`  • ${g.name} (${s}): ${qty}`);
+  }));
   if(linenNeeded.length){
     lines.push("\n🛏️ LINENS & BEDDING NEEDED:");
     lines.push(...linenNeeded);
-    hasContent = true;
+    hasContent=true;
   }
 
   // Extras
-  const notes = document.getElementById("extra-notes").value.trim();
-  if(customItems.length || notes){
+  const notes=document.getElementById("extra-notes").value.trim();
+  if(customItems.length||notes){
     lines.push("\n🛒 EXTRA REQUESTS:");
-    customItems.forEach(it => lines.push(`  • ${it.name} — qty: ${it.qty}`));
+    customItems.forEach(it=>lines.push(`  • ${it.name} — qty: ${it.qty}`));
     if(notes) lines.push(`\n📝 Notes: ${notes}`);
-    hasContent = true;
+    hasContent=true;
   }
 
-  if(!hasContent){
-    lines.push("\n✅ Everything is fully stocked — nothing needed!");
-  }
-
+  if(!hasContent) lines.push("\n✅ Everything is fully stocked — nothing needed!");
   lines.push("\n─────────────────────────────");
   return lines.join("\n");
 }
 
 function showReport(text){
-  const rout = document.getElementById("rout");
-  rout.textContent = text; rout.style.display = "block";
+  const rout=document.getElementById("rout");
+  rout.textContent=text;rout.style.display="block";
   rout.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 function sendWhatsApp(number){
-  const text = buildReport(); if(!text) return;
+  const text=buildReport();if(!text)return;
   showReport(text);
   window.open(`https://wa.me/${number}?text=${encodeURIComponent(text)}`,"_blank");
 }
 function copyReport(){
-  const text = buildReport(); if(!text) return;
+  const text=buildReport();if(!text)return;
   showReport(text);
-  if(navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showToast("✓ Copied!"));
+  if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>showToast("✓ Copied!"));
 }
 
 render();
