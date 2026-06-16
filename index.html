@@ -33,9 +33,9 @@ textarea{resize:none;line-height:1.5}
 .chev.open{transform:rotate(180deg)}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 1.25rem 12px;background:#f0f2f5}
 .card{background:#fff;border-radius:14px;cursor:pointer;border:2px solid transparent;box-shadow:0 1px 3px rgba(0,0,0,.08);transition:border-color .15s,background .15s;display:flex;align-items:center;padding:14px;min-height:64px;gap:12px}
-.card.ok{border-color:#0a1628;background:#f0f6f0;box-shadow:0 2px 8px rgba(10,22,40,.12)}
+.card.ok{border-color:#dc2626;background:#fff5f5;box-shadow:0 2px 8px rgba(220,38,38,.15)}
 .card-check{width:22px;height:22px;border-radius:6px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;transition:all .15s}
-.card.ok .card-check{background:#0a1628;border-color:#0a1628;color:#c9a84c}
+.card.ok .card-check{background:#dc2626;border-color:#dc2626;color:#fff}
 .card-name{font-size:14px;color:#111;line-height:1.3;font-weight:600}
 /* Linens — qty per size */
 .linen-grid{display:flex;flex-direction:column;gap:8px;padding:10px 1.25rem 12px;background:#f0f2f5}
@@ -83,7 +83,7 @@ textarea{resize:none;line-height:1.5}
 <div class="header">
   <div class="logo">XTREME-JAX CLEANING SUPPORT INC.</div>
   <div class="title">Inventory Checklist</div>
-  <div class="sub">Tap what IS available — missing items go in the report</div>
+  <div class="sub">Tap items that need to be ordered</div>
 </div>
 
 <div class="fields">
@@ -142,7 +142,7 @@ textarea{resize:none;line-height:1.5}
 <div class="footer">
   <div class="stats">
     <div class="stat"><div class="stat-n good" id="n-ok">0</div><div class="stat-l">OK</div></div>
-    <div class="stat"><div class="stat-n warn" id="n-miss">0</div><div class="stat-l">Missing</div></div>
+    <div class="stat"><div class="stat-n warn" id="n-miss">0</div><div class="stat-l">To order</div></div>
     <div class="stat"><div class="stat-n" id="n-tot">0</div><div class="stat-l">Total</div></div>
   </div>
   <div class="btn-group">
@@ -266,17 +266,17 @@ function render(){
   cont.innerHTML="";
   sections.forEach((sec,si)=>{
     const secItems=allItems.filter(x=>x.si===si);
-    const miss=secItems.filter(x=>!x.state).length;
+    const selected=secItems.filter(x=>x.state).length;
     const isOpen=openSec[sec.id];
-    const badgeHtml=miss>0
-      ?`<span class="badge miss">${miss} missing</span>`
+    const badgeHtml=selected>0
+      ?`<span class="badge miss">${selected} to order</span>`
       :`<span class="badge ok">All good ✓</span>`;
     let gridHtml="";
     if(isOpen){
       secItems.forEach(item=>{
         const idx=allItems.indexOf(item);
         gridHtml+=`<div class="card${item.state?" ok":""}" data-idx="${idx}">
-          <div class="card-check">${item.state?"✓":""}</div>
+          <div class="card-check">${item.state?"!":""}</div>
           <div class="card-name">${item.name}</div>
         </div>`;
       });
@@ -341,8 +341,8 @@ function removeCustom(idx){customItems.splice(idx,1);renderCustom();}
 
 function updateStats(){
   const ok=allItems.filter(x=>x.state).length;
-  document.getElementById("n-ok").textContent=ok;
-  document.getElementById("n-miss").textContent=allItems.length-ok;
+  document.getElementById("n-ok").textContent=allItems.length-ok;
+  document.getElementById("n-miss").textContent=ok;
   document.getElementById("n-tot").textContent=allItems.length;
 }
 
@@ -372,10 +372,10 @@ function buildReport(){
   let hasContent=false;
 
   sections.forEach((sec,si)=>{
-    const miss=allItems.filter(x=>x.si===si&&!x.state);
-    if(miss.length){
-      lines.push(`\n🔴 ${sec.label.toUpperCase()}:`);
-      miss.forEach(x=>lines.push(`  • ${x.name}`));
+    const toOrder=allItems.filter(x=>x.si===si&&x.state);
+    if(toOrder.length){
+      lines.push(`\n🛒 ${sec.label.toUpperCase()}:`);
+      toOrder.forEach(x=>lines.push(`  • ${x.name}`));
       hasContent=true;
     }
   });
@@ -388,7 +388,7 @@ function buildReport(){
     hasContent=true;
   }
 
-  if(!hasContent) lines.push("\n✅ Everything is stocked — nothing needed!");
+  if(!hasContent) lines.push("\n✅ All good — nothing to order!");
   lines.push("\n─────────────────────────────");
   return lines.join("\n");
 }
